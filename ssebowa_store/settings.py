@@ -15,10 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3%y3laftm62q0zaj+s7#p-xqq9(&#q+)s8)p-&#&bz*0$!xu$0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["161.35.42.151","store.ssebowa.org","www.store.ssebowa.org","127.0.0.1"]
-
+DEBUG = False
 
 # Application definition
 
@@ -77,13 +74,18 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+ALLOWED_HOSTS = ['desiretoys.pk', 'www.desiretoys.pk']
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'desire_db',
+        'USER': 'desire_user',
+        'PASSWORD': 'StrongPassword123',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 
 # CKEditor Configuration
 CKEDITOR_UPLOAD_PATH = 'uploads/'
