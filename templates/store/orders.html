@@ -1,0 +1,591 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<style>
+  :root {
+    --orange: #2c3e50;
+    --orange-dark: #2c3e50;
+    --orange-light: #fff3e0;
+    --text-dark: #2c3e50;
+    --text-muted: #7f8c8d;
+    --white: #ffffff;
+    --border-color: #e8eaed;
+  }
+
+  /* ===== HERO SECTION ===== */
+  .orders-hero {
+    background: linear-gradient(135deg, var(--text-dark) 0%, #34495e 100%);
+    color: white;
+    padding: 60px 0;
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .orders-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(253, 126, 20, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .orders-hero h1 {
+    font-weight: 800;
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .orders-hero i {
+    font-size: 3rem;
+    color: var(--orange);
+  }
+
+  .orders-hero p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== CONTAINER ===== */
+  .orders-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ===== ORDER CARD ===== */
+  .order-card {
+    background: white;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .order-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--orange) 0%, var(--orange-dark) 100%);
+    border-radius: 16px 0 0 16px;
+  }
+
+  .order-card:hover {
+    box-shadow: 0 12px 32px rgba(253, 126, 20, 0.2);
+    transform: translateY(-6px);
+  }
+
+  /* ===== ORDER HEADER ===== */
+  .order-header {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+    color: white;
+    padding: 28px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .order-header::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .order-header > div:first-child {
+    position: relative;
+    z-index: 1;
+  }
+
+  .order-header > div:last-child {
+    position: relative;
+    z-index: 1;
+  }
+
+  .order-id {
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .order-id::before {
+    content: '🛒';
+    font-size: 1.5rem;
+  }
+
+  .order-date {
+    font-size: 0.95rem;
+    opacity: 0.95;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  /* ===== ORDER BODY ===== */
+  .order-body {
+    padding: 35px;
+  }
+
+  /* ===== PRODUCT SECTION ===== */
+  .product-section {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+  }
+
+  .product-image {
+    width: 140px;
+    height: 140px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 6px 20px rgba(253, 126, 20, 0.15);
+    flex-shrink: 0;
+    border: 2px solid var(--border-color);
+  }
+
+  .product-info {
+    flex: 1;
+  }
+
+  .product-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  .product-sku {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .product-sku strong {
+    color: var(--text-dark);
+  }
+
+  .product-price {
+    color: var(--orange);
+    font-weight: 800;
+    font-size: 1.45rem;
+    margin-top: 15px;
+  }
+
+  .quantity-badge {
+    display: inline-block;
+    background: var(--orange-light);
+    color: var(--orange);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: 12px;
+    border: 1.5px solid rgba(253, 126, 20, 0.3);
+  }
+
+  .quantity-badge i {
+    margin-right: 6px;
+  }
+
+  /* ===== ORDER DIVIDER ===== */
+  .order-divider {
+    border-top: 2px solid var(--border-color);
+    margin: 30px 0;
+  }
+
+  /* ===== ADDRESS SECTION ===== */
+  .address-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, var(--orange-light) 100%);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid var(--orange);
+    margin-top: 20px;
+  }
+
+  .address-title {
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+  }
+
+  .address-title i {
+    color: var(--orange);
+    font-size: 1.1rem;
+  }
+
+  .address-content {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+  }
+
+  .address-content div {
+    margin-bottom: 6px;
+  }
+
+  .address-name {
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+  }
+
+  .address-phone {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* ===== STATUS BADGE ===== */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+  }
+
+  .status-pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .status-accepted {
+    background: #cfe2ff;
+    color: #084298;
+  }
+
+  .status-packed {
+    background: #cfe2ff;
+    color: #084298;
+  }
+
+  .status-on-way {
+    background: #cff4fc;
+    color: #055160;
+  }
+
+  .status-delivered {
+    background: #d1e7dd;
+    color: #0f5132;
+  }
+
+  .status-cancelled {
+    background: #f8d7da;
+    color: #842029;
+  }
+
+  .status-pending::before { content: '⏳'; margin-right: 4px; }
+  .status-accepted::before { content: '✓'; margin-right: 4px; }
+  .status-packed::before { content: '📦'; margin-right: 4px; }
+  .status-on-way::before { content: '🚚'; margin-right: 4px; }
+  .status-delivered::before { content: '✓✓'; margin-right: 4px; }
+  .status-cancelled::before { content: '✕'; margin-right: 4px; }
+
+  /* ===== ORDER FOOTER ===== */
+  .order-footer {
+    background: linear-gradient(135deg, #f8f9fa 0%, var(--orange-light) 100%);
+    padding: 28px 35px;
+    border-top: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .order-info {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .order-info strong {
+    color: var(--text-dark);
+  }
+
+  .order-total {
+    color: var(--orange);
+    font-weight: 800;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .order-total::before {
+    content: '💰';
+    font-size: 1.3rem;
+  }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    text-align: center;
+    padding: 100px 40px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 2px solid var(--border-color);
+  }
+
+  .empty-state-icon {
+    font-size: 6rem;
+    margin-bottom: 25px;
+    opacity: 0.5;
+  }
+
+  .empty-state h4 {
+    color: var(--text-dark);
+    font-weight: 800;
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .empty-state-text {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin-bottom: 35px;
+    line-height: 1.6;
+  }
+
+  .btn-shop {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+    border: none;
+    color: white;
+    padding: 15px 45px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+    box-shadow: 0 6px 20px rgba(253, 126, 20, 0.3);
+  }
+
+  .btn-shop:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(253, 126, 20, 0.4);
+    color: white;
+    text-decoration: none;
+  }
+
+  .btn-shop:active {
+    transform: translateY(-2px);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .orders-hero {
+      padding: 40px 0;
+    }
+
+    .orders-hero h1 {
+      font-size: 2rem;
+      gap: 10px;
+    }
+
+    .orders-hero i {
+      font-size: 2rem;
+    }
+
+    .order-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .product-section {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 20px;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px;
+    }
+
+    .order-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .order-body {
+      padding: 20px;
+    }
+
+    .empty-state {
+      padding: 60px 30px;
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+    }
+  }
+</style>
+
+<!-- HERO SECTION -->
+<section class="orders-hero">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1>
+          <i class="fas fa-list-check"></i>My Orders
+        </h1>
+        <p>View and track all your purchases</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDERS SECTION -->
+<section class="py-5">
+  <div class="container orders-container">
+    
+    {% if orders %}
+      <!-- Orders List -->
+      {% for order in orders %}
+      <div class="order-card">
+        <!-- Order Header -->
+        <div class="order-header">
+          <div>
+            <div class="order-id">Order #{{ order.id }}</div>
+            <div class="order-date">
+              <i class="fas fa-calendar-alt me-2"></i>{{ order.ordered_date|date:"M d, Y - g:i A" }}
+            </div>
+          </div>
+          <div class="status-badge status-{{ order.status|lower|slugify }}">
+            {{ order.status }}
+          </div>
+        </div>
+
+        <!-- Order Body -->
+        <div class="order-body">
+          <!-- Product Information -->
+          <div class="product-section">
+            {% if order.product.product_image %}
+              <img src="{{ order.product.product_image.url }}" alt="{{ order.product.title }}" class="product-image">
+            {% else %}
+              <div class="product-image bg-light d-flex align-items-center justify-content-center">
+                <i class="fas fa-image" style="font-size: 3rem; color: #bdc3c7;"></i>
+              </div>
+            {% endif %}
+
+            <div class="product-info">
+              <div class="product-title">{{ order.product.title }}</div>
+              <div class="product-sku">
+                <strong>SKU:</strong> {{ order.product.sku }}
+              </div>
+              <div class="quantity-badge">
+                <i class="fas fa-boxes"></i>Qty: {{ order.quantity }}
+              </div>
+              <div class="product-price">RS{{ order.product.price|floatformat:2 }}</div>
+            </div>
+          </div>
+
+          <div class="order-divider"></div>
+
+          <!-- Shipping Address Information -->
+          <div class="address-section">
+            <div class="address-title">
+              <i class="fas fa-map-marker-alt"></i>Shipping Address
+            </div>
+            {% if order.address %}
+              <div class="address-content">
+                {% if order.address.full_name %}
+                  <div class="address-name">{{ order.address.full_name }}</div>
+                {% endif %}
+                {% if order.address.phone_number %}
+                  <div class="address-phone"><i class="fas fa-phone me-2"></i>{{ order.address.phone_number }}</div>
+                {% endif %}
+                {% if order.address.building_no %}
+                  <div><i class="fas fa-house me-2"></i>{{ order.address.building_no }}</div>
+                {% endif %}
+                {% if order.address.locality %}
+                  <div><i class="fas fa-landmark me-2"></i>{{ order.address.locality }}</div>
+                {% endif %}
+                {% if order.address.area %}
+                  <div><i class="fas fa-map me-2"></i>{{ order.address.area }}</div>
+                {% endif %}
+                <div><i class="fas fa-city me-2"></i>{{ order.address.city }}{% if order.address.province %}, {{ order.address.province }}{% endif %}</div>
+                <div><i class="fas fa-globe me-2"></i>{{ order.address.country }}</div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0"><em>No address information available</em></p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Order Footer -->
+        <div class="order-footer">
+          <div class="order-info">
+            <i class="fas fa-info-circle me-2"></i>Order ID: <strong>#{{ order.id }}</strong>
+          </div>
+          <div class="order-total">
+            RS{{ order.product.price|floatformat:2 }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <!-- Empty State -->
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="fas fa-inbox"></i>
+        </div>
+        <h4>No Orders Yet</h4>
+        <p class="empty-state-text">You haven't placed any orders yet.<br>Start exploring and create your first order!</p>
+        <a href="{% url 'store:home' %}" class="btn-shop">
+          <i class="fas fa-shopping-bag"></i>Start Shopping
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock content %}

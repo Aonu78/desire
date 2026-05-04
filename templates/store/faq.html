@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FAQ - Desiretoys{% endblock %}
+
+{% block content %}
+<!-- FAQ Hero Section -->
+<section class="page-hero">
+    <div class="container">
+        <h1 data-aos="fade-up">Frequently Asked Questions</h1>
+        <nav aria-label="breadcrumb" data-aos="fade-up" data-aos-delay="100">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">FAQ</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<!-- FAQ Content -->
+<section class="faq-page py-5">
+    <div class="container">
+        <!-- Search Bar -->
+        <div class="row justify-content-center mb-5" data-aos="fade-up">
+            <div class="col-md-8">
+                <div class="faq-search">
+                    <input type="text" id="faqSearch" class="form-control" placeholder="Search your question...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Categories -->
+        <div class="row">
+            <div class="col-12" data-aos="fade-up">
+                <ul class="nav nav-pills faq-categories mb-4" id="faqTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="all-tab" data-bs-toggle="pill" data-bs-target="#all" type="button">All Questions</button>
+                    </li>
+                    {% for category in faq_categories %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="{{ category.id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ category.id }}" type="button">{{ category.name }}</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        <!-- FAQ Accordions -->
+        <div class="tab-content" id="faqTabContent">
+            <!-- All Questions Tab -->
+            <div class="tab-pane fade show active" id="all" role="tabpanel">
+                <div class="accordion" id="accordionAll">
+                    {% for category in faq_categories %}
+                        <div class="faq-section mb-4">
+                            <h3 class="faq-section-title">{{ category.name }}</h3>
+                            {% for item in category.questions %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#q{{ category.id }}{{ forloop.counter }}">
+                                        {{ item.question }}
+                                    </button>
+                                </h2>
+                                <div id="q{{ category.id }}{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#accordionAll">
+                                    <div class="accordion-body">
+                                        {{ item.answer }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Individual Category Tabs -->
+            {% for category in faq_categories %}
+            <div class="tab-pane fade" id="{{ category.id }}" role="tabpanel">
+                <div class="accordion" id="accordion{{ category.id|capfirst }}">
+                    {% for item in category.questions %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#q{{ category.id }}{{ forloop.counter }}2">
+                                {{ item.question }}
+                            </button>
+                        </h2>
+                        <div id="q{{ category.id }}{{ forloop.counter }}2" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#accordion{{ category.id|capfirst }}">
+                            <div class="accordion-body">
+                                {{ item.answer }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Still Have Questions -->
+        <div class="row mt-5" data-aos="fade-up">
+            <div class="col-12 text-center">
+                <div class="still-questions">
+                    <h3>Still Have Questions?</h3>
+                    <p>Can't find what you're looking for? We're here to help!</p>
+                    <a href="{% url 'store:contact' %}" class="btn-contact">
+                        <i class="fas fa-envelope"></i> Contact Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.page-hero {
+    background: linear-gradient(135deg, #2c3e50 0%, #2c3e50 100%);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.page-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.breadcrumb {
+    background: transparent;
+    justify-content: center;
+}
+
+.breadcrumb-item a {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: white;
+}
+
+.faq-search {
+    position: relative;
+}
+
+.faq-search i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.faq-search .form-control {
+    padding: 15px 20px;
+    border-radius: 50px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.faq-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.faq-categories .nav-link {
+    padding: 10px 20px;
+    border-radius: 50px;
+    background: #f5f5f5;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+}
+
+.faq-categories .nav-link:hover {
+    background: #e0e0e0;
+}
+
+.faq-categories .nav-link.active {
+    background: #f85606;
+    color: white;
+}
+
+.faq-section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+    padding-left: 10px;
+    border-left: 4px solid #f85606;
+}
+
+.accordion-item {
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+.accordion-button {
+    font-weight: 600;
+    color: #333;
+    background: #f9f9f9;
+}
+
+.accordion-button:not(.collapsed) {
+    background: #f85606;
+    color: white;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.accordion-body {
+    padding: 20px;
+    line-height: 1.8;
+    color: #666;
+}
+
+.still-questions {
+    background: #f9f9f9;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.still-questions h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.still-questions p {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+}
+
+.btn-contact {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #f85606;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-contact:hover {
+    background: #d44d04;
+    color: white;
+}
+
+.btn-contact i {
+    margin-right: 5px;
+}
+
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 40px 0;
+    }
+    
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .faq-categories {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .faq-categories .nav-link {
+        text-align: center;
+    }
+    
+    .still-questions {
+        padding: 30px;
+    }
+    
+    .still-questions h3 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
+<script>
+// Simple search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('faqSearch');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            let searchText = this.value.toLowerCase();
+            let accordionItems = document.querySelectorAll('.accordion-item');
+            
+            accordionItems.forEach(function(item) {
+                let question = item.querySelector('.accordion-button').innerText.toLowerCase();
+                let answer = item.querySelector('.accordion-body').innerText.toLowerCase();
+                
+                if(question.includes(searchText) || answer.includes(searchText)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Show/hide section titles based on visible items
+            let sections = document.querySelectorAll('.faq-section');
+            sections.forEach(function(section) {
+                let visibleItems = section.querySelectorAll('.accordion-item[style="display: block;"]');
+                if (visibleItems.length === 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

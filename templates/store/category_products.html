@@ -1,0 +1,490 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* ===== SIDEBAR CATEGORIES STYLING ===== */
+  .theme-sidebar-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #fd7e14;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #fd7e14;
+    letter-spacing: 1px;
+  }
+
+  .category-link {
+    text-decoration: none;
+    display: block;
+  }
+
+  .category-item {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .theme-category {
+    background-color: #f8f9fa;
+    border: 1px solid #e8eaed;
+  }
+
+  .theme-category:hover {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    border-color: #2c3e50;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+  }
+
+  .theme-category:hover .category-text {
+    color: white !important;
+  }
+
+  .theme-category-active {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    border: 1px solid #2c3e50;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+  }
+
+  .category-text {
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+  }
+
+  .theme-category .category-text {
+    color: #333 !important;
+  }
+
+  .theme-category-active .category-text {
+    color: white !important;
+  }
+
+  /* ===== HERO SECTION ===== */
+  .shop-hero {
+    background-color: #2c3e50;
+    color: white;
+  }
+
+  .shop-hero h1 {
+    color: white;
+    font-weight: 800;
+  }
+
+  .shop-hero .breadcrumb {
+    background: transparent;
+  }
+
+  .shop-hero .breadcrumb-item {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .shop-hero .breadcrumb-item.active {
+    color: white;
+  }
+
+  .shop-hero .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.3s ease;
+  }
+
+  .shop-hero .breadcrumb-item a:hover {
+    color: white;
+  }
+
+  /* ===== PRODUCT CARD STYLING ===== */
+  .product {
+    transition: all 0.3s ease;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .product:hover {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+
+  .product-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1; /* This ensures square images */
+  }
+
+  .product-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .product:hover .product-image-wrapper img {
+    transform: scale(1.05);
+  }
+
+  .product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .product:hover .product-overlay {
+    opacity: 1;
+  }
+
+  .product-overlay ul {
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .btn-shop-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fd7e14;
+    color: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    text-decoration: none;
+  }
+
+  .btn-shop-icon:hover {
+    background-color: #ff9b4c;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(253, 126, 20, 0.4);
+    color: white;
+  }
+
+  /* Product Badges */
+  .product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+  }
+
+  .badge-sale {
+    background: #dc3545;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .badge-new {
+    background: #28a745;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  /* Product Info */
+  .product-info {
+    padding: 15px;
+    text-align: center;
+  }
+
+  .product-title {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .product-title a {
+    color: #2c3e50;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .product-title a:hover {
+    color: #fd7e14;
+  }
+
+  /* ===== PRODUCT RATING STYLING ===== */
+  .product-rating {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.85rem;
+  }
+
+  .product-rating .stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .product-rating .stars i {
+    font-size: 0.75rem;
+  }
+
+  .rating-text {
+    font-size: 0.75rem;
+    color: #6c757d;
+  }
+
+  /* Product Price */
+  .product-price {
+    font-size: 1rem;
+  }
+
+  .current-price {
+    color: #fd7e14;
+    font-weight: 700;
+  }
+
+  .old-price {
+    color: #6c757d;
+    text-decoration: line-through;
+    font-size: 0.85rem;
+    margin-right: 5px;
+  }
+
+  /* Pagination */
+  .page-link {
+    color: #fd7e14 !important;
+    border: 1px solid #dee2e6 !important;
+    margin: 0 3px;
+    border-radius: 5px !important;
+  }
+
+  .page-link:hover {
+    background: #fff8f0 !important;
+    border-color: #fd7e14 !important;
+  }
+
+  .page-item.active .page-link {
+    background: #fd7e14 !important;
+    border-color: #fd7e14 !important;
+    color: white !important;
+  }
+
+  /* Empty State */
+  .theme-empty-state {
+    padding: 40px;
+    background: #fff8f0;
+    border-radius: 10px;
+  }
+
+  .btn-brand {
+    background-color: #fd7e14;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .btn-brand:hover {
+    background-color: #ff9b4c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3);
+    color: white;
+  }
+</style>
+
+<div class="container">
+  <!-- HERO SECTION-->
+  <section class="py-5 shop-hero">
+    <div class="container">
+      <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+        <div class="col-lg-6">
+          <h1 class="h2 text-uppercase mb-0">Shop - {{category.title}}</h1>
+        </div>
+        <div class="col-lg-6 text-lg-right">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-lg-end mb-0 px-0">
+              <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'store:all-categories' %}">Category</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{category.title}}</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container p-0">
+      <div class="row">
+        <!-- SHOP SIDEBAR -->
+        <div class="col-lg-3 order-2 order-lg-1">
+          <h5 class="text-uppercase mb-4 theme-sidebar-title">Categories</h5>
+
+          {% if categories %}
+            {% for cat in categories %}
+              <a href="{% url 'store:category-products' cat.slug %}" class="category-link">
+                <div class="py-2 px-4 mb-3 category-item {% if category.slug == cat.slug %}theme-category-active{% else %}theme-category{% endif %}">
+                  <strong class="small text-uppercase font-weight-bold category-text">
+                    {{cat.title}}
+                  </strong>
+                </div>
+              </a>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        <!-- SHOP LISTING-->
+        <div class="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
+          <div class="row mb-3 align-items-center">
+            <div class="col-lg-6 mb-2 mb-lg-0">
+              <p class="text-small text-muted mb-0">Showing {{products.count}} product{% if products.count != 1 %}s{% endif %}</p>
+            </div>
+          </div>
+
+          <div class="row">
+            {% if products %}
+              {% for product in products %}
+                <!-- PRODUCT with proper sizing -->
+                <div class="col-lg-4 col-sm-6 mb-4">
+                  <div class="product">
+                    <div class="product-image-wrapper">
+                      <a href="{% url 'store:product-detail' product.slug %}">
+                        {% if product.product_image %}
+                          <img src="{{product.product_image.url}}" alt="{{product.title}}">
+                        {% else %}
+                          <img src="{% static 'img/product-1.jpg' %}" alt="{{product.title}}">
+                        {% endif %}
+                      </a>
+                      
+                      <!-- Hover overlay with buttons -->
+                      <div class="product-overlay">
+                        <ul>
+                          <li>
+                            <a href="{% url 'store:product-detail' product.slug %}?action=add-to-cart" class="btn-shop-icon">
+                              <i class="fas fa-shopping-cart"></i>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="{% url 'store:product-detail' product.slug %}" class="btn-shop-icon">
+                              <i class="fas fa-eye"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <!-- Badges -->
+                      {% if product.is_new or product.is_sale %}
+                        <div class="product-badge">
+                          {% if product.is_sale %}
+                            <span class="badge-sale">SALE</span>
+                          {% elif product.is_new %}
+                            <span class="badge-new">NEW</span>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="product-info">
+                      <h6 class="product-title">
+                        <a href="{% url 'store:product-detail' product.slug %}">
+                          {{product.title|truncatechars:25}}
+                        </a>
+                      </h6>
+                      
+                      <!-- Rating Stars -->
+                      <div class="product-rating">
+                        {% with avg_rating=product.get_average_rating %}
+                          <div class="stars">
+                            {% for i in "12345" %}
+                              <i class="fas fa-star" style="color: {% if forloop.counter <= avg_rating %}#f39c12{% else %}#ddd{% endif %};"></i>
+                            {% endfor %}
+                          </div>
+                          <span class="rating-text">({{ avg_rating|floatformat:1 }})</span>
+                        {% endwith %}
+                      </div>
+                      
+                      <!-- Price -->
+                      <div class="product-price">
+                        {% if product.old_price %}
+                          <span class="old-price">RS{{product.old_price}}</span>
+                          <span class="current-price">RS{{product.price}}</span>
+                        {% else %}
+                          <span class="current-price">RS{{product.price}}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="col-12 text-center py-5">
+                <div class="theme-empty-state">
+                  <i class="fas fa-box-open fa-4x mb-3" style="color: #f39c12;"></i>
+                  <h3 class="h4 mb-3">No Products Found</h3>
+                  <p class="text-muted mb-4">There are no products in this category yet.</p>
+                  <a href="{% url 'store:home' %}" class="btn-brand">Browse Other Products</a>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Pagination -->
+          {% if products.has_other_pages %}
+            <div class="row">
+              <div class="col-12">
+                <nav aria-label="Page navigation" class="mt-4">
+                  <ul class="pagination justify-content-center">
+                    {% if products.has_previous %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ products.previous_page_number }}" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                    {% endif %}
+
+                    {% for num in products.paginator.page_range %}
+                      {% if products.number == num %}
+                        <li class="page-item active">
+                          <span class="page-link">{{ num }}</span>
+                        </li>
+                      {% else %}
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+
+                    {% if products.has_next %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ products.next_page_number }}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock content %}

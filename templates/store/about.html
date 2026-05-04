@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - Desiretoys{% endblock %}
+
+{% block content %}
+<!-- About Hero Section -->
+<section class="page-hero">
+    <div class="container">
+        <h1 data-aos="fade-up">About Us</h1>
+        <nav aria-label="breadcrumb" data-aos="fade-up" data-aos-delay="100">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">About Us</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<!-- About Content -->
+<section class="about-content py-5">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6" data-aos="fade-right">
+                <img src="{% static 'img/desiretoy.png' %}" alt="Our Story" class="img-fluid rounded-3 shadow">
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <h2 class="section-title">Our Story</h2>
+                <p class="lead">Desiretoys started with a simple mission: to make online shopping easy, reliable, and enjoyable for everyone in Pakistan.</p>
+                <p>Founded in 2020, we've grown from a small startup to one of Pakistan's most trusted online shopping destinations. Our journey has been driven by our commitment to quality products, fast delivery, and exceptional customer service.</p>
+                <p>Today, we serve thousands of happy customers across the country, offering everything from electronics to fashion, home goods to beauty products.</p>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-12 text-center" data-aos="fade-up">
+                <h2 class="section-title">Our Values</h2>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Quality First</h3>
+                    <p>We carefully select every product to ensure it meets our high quality standards.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Fast Delivery</h3>
+                    <p>We work with the best logistics partners to get your orders to you quickly.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Customer First</h3>
+                    <p>Your satisfaction is our priority. We're here to help every step of the way.</p>
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+</section>
+
+<style>
+.page-hero {
+    background: linear-gradient(135deg, #2c3e50 0%, #2c3e50 100%);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.page-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.breadcrumb {
+    background: transparent;
+    justify-content: center;
+}
+
+.breadcrumb-item a {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: white;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 70px;
+    height: 3px;
+    background: #f85606;
+}
+
+.text-center .section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.value-card {
+    text-align: center;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    height: 100%;
+}
+
+.value-card:hover {
+    transform: translateY(-10px);
+}
+
+.value-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(248, 86, 6, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.value-icon i {
+    font-size: 2.5rem;
+    color: #f85606;
+}
+
+.value-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.value-card p {
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+}
+
+.benefits-list li {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.benefits-list li i {
+    color: #f85606;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 40px 0;
+    }
+    
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .value-card {
+        padding: 20px;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    :root {
+        --primary-orange: #2c3e50;
+        --secondary-orange: #2c3e50;
+        --light-orange: #2c3e50;
+        --dark-orange: #2c3e50;
+    }
+
+    .container.py-5 {
+        min-height: 70vh;
+    }
+
+    h1 {
+        color: #333;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    h1:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: var(--primary-orange);
+        border-radius: 2px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(255, 107, 0, 0.1);
+        transition: transform 0.3s ease;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(255, 107, 0, 0.15);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--light-orange) 0%, #fff 100%);
+        border-bottom: 2px solid var(--primary-orange);
+        padding: 1.2rem 1.5rem;
+        color: #555;
+        font-size: 0.95rem;
+        border-radius: 15px 15px 0 0 !important;
+    }
+
+    .card-header small {
+        display: block;
+        line-height: 1.6;
+    }
+
+    .card-body {
+        padding: 2.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.8rem;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #eaeaea;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #fafafa;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--primary-orange);
+        box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
+        background-color: #fff;
+    }
+
+    .form-group input::placeholder {
+        color: #aaa;
+        font-size: 0.95rem;
+    }
+
+    /* Style for select fields if any */
+    .form-group select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #eaeaea;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #fafafa;
+        cursor: pointer;
+    }
+
+    .form-group select:focus {
+        outline: none;
+        border-color: var(--primary-orange);
+        box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
+        background-color: #fff;
+    }
+
+    /* Style for textarea if any */
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #eaeaea;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #fafafa;
+        resize: vertical;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary-orange);
+        box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
+        background-color: #fff;
+    }
+
+    .btn-primary {
+        background: var(--primary-orange);
+        border: none;
+        padding: 14px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 10px;
+        width: 100%;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background: var(--dark-orange);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(255, 107, 0, 0.4);
+    }
+
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .alert {
+        border-radius: 10px;
+        border: none;
+        padding: 1rem 1.5rem;
+        margin-top: 1.5rem;
+        position: relative;
+    }
+
+    .alert-danger {
+        background-color: #fff2f0;
+        color: #dc3545;
+        border-left: 4px solid #dc3545;
+    }
+
+    .alert-dismissible {
+        padding-right: 3rem;
+    }
+
+    .alert-dismissible .close {
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #dc3545;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+    }
+
+    .alert-dismissible .close:hover {
+        opacity: 1;
+    }
+
+    hr {
+        margin: 2rem 0;
+        border: 0;
+        border-top: 2px dashed #eaeaea;
+    }
+
+    .card-body a {
+        color: var(--primary-orange);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .card-body a:hover {
+        color: var(--dark-orange);
+    }
+
+    .card-body a:after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary-orange);
+        transition: width 0.3s ease;
+    }
+
+    .card-body a:hover:after {
+        width: 100%;
+    }
+
+    /* Password strength indicator (if you want to add one) */
+    .password-strength {
+        height: 5px;
+        border-radius: 5px;
+        margin-top: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .password-strength.weak {
+        background: #dc3545;
+        width: 33%;
+    }
+
+    .password-strength.medium {
+        background: #ffc107;
+        width: 66%;
+    }
+
+    .password-strength.strong {
+        background: #28a745;
+        width: 100%;
+    }
+
+    /* Help text styling */
+    .form-text {
+        color: #777;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+
+    /* Checkbox and radio styling */
+    .form-check {
+        margin: 1rem 0;
+    }
+
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+        cursor: pointer;
+        accent-color: var(--primary-orange);
+    }
+
+    .form-check-label {
+        color: #666;
+        cursor: pointer;
+        font-size: 0.95rem;
+    }
+
+    /* Terms and conditions link */
+    .terms-link {
+        color: var(--primary-orange);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .terms-link:hover {
+        text-decoration: underline;
+        color: var(--dark-orange);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .col-md-8.offset-2 {
+            offset: 0;
+            padding: 0 15px;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-header {
+            padding: 1rem;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+        }
+    }
+
+    /* Animation for form appearance */
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card {
+        animation: slideUp 0.6s ease;
+    }
+
+    /* Success message styling */
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border-left: 4px solid #28a745;
+    }
+
+    /* Info message styling */
+    .alert-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border-left: 4px solid #17a2b8;
+    }
+
+    /* Warning message styling */
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border-left: 4px solid #ffc107;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="col-md-8 offset-2">
+        <h1 class="mb-5">Create Your Account</h1>
+       
+            <div class="card-body">
+
+                {% include 'partials/_messages.html' %}
+
+                <form method="post" action="">
+                    {% csrf_token %}
+                    
+                    <fieldset>
+                        {% for fm in form %}
+                            <div class="form-group">
+                                {{fm.label_tag}}
+                                {{fm}}
+                                {% if fm.errors %}
+                                    <small class="text-danger">
+                                        <i class="fas fa-exclamation-circle mr-1"></i>
+                                        {{fm.errors|striptags}}
+                                    </small>
+                                {% endif %}
+                                {% if fm.help_text %}
+                                    <small class="form-text text-muted">
+                                        <i class="fas fa-question-circle mr-1" style="color: var(--primary-orange);"></i>
+                                        {{fm.help_text}}
+                                    </small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        
+                      
+                        
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-user-plus mr-2"></i>Create Account
+                        </button>
+                    </fieldset>
+
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                {{error}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                </form>
+
+                <hr>
+
+                <div class="text-center">
+                    <p class="mb-0">
+                        <i class="fas fa-sign-in-alt mr-2" style="color: var(--primary-orange);"></i>
+                        Already have an account? <a href="{% url 'store:login' %}">Log In</a>
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+    </div>       
+</div>
+
+<!-- Add Font Awesome for icons (add this to your base.html if not already present) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+{% endblock content %}

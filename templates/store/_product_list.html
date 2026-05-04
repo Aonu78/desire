@@ -1,0 +1,68 @@
+{% load static %}
+<div class="row" id="product-cards">
+  {% if products %}
+    {% for product in products %}
+      <div class="col-lg-4 col-sm-6">
+        <div class="product text-center">
+          <div class="mb-3 position-relative">
+            <a class="d-block" href="{% url 'store:product-detail' product.slug %}">
+              {% if product.product_image %}
+                <img class="img-fluid w-100" src="{{ product.product_image.url }}" alt="{{ product.title }}">
+              {% else %}
+                <img class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="{{ product.title }}">
+              {% endif %}
+            </a>
+            <div class="product-overlay">
+              <ul class="mb-0 list-inline">
+                <li class="list-inline-item m-0 p-0"><a class="btn-shop-icon" href="{% url 'store:product-detail' product.slug %}?action=add-to-cart" title="Add to Cart"><i class="fas fa-shopping-cart"></i></a></li>
+                <li class="list-inline-item m-0 p-0"><a class="btn-shop-icon" href="{% url 'store:product-detail' product.slug %}" title="View Details"><i class="fas fa-eye"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <h6> <a class="reset-anchor" href="{% url 'store:product-detail' product.slug %}">{{ product.title }}</a></h6>
+          <!-- Rating Stars -->
+          <div class="product-rating">
+            {% with avg_rating=product.get_average_rating %}
+              <div class="stars">
+                {% for i in "12345" %}
+                  <i class="fas fa-star" style="color: {% if forloop.counter <= avg_rating %}#fd7e14{% else %}#ddd{% endif %};"></i>
+                {% endfor %}
+              </div>
+              <span class="rating-text">({{ avg_rating }})</span>
+            {% endwith %}
+          </div>
+          <p class="small text-muted">${{ product.price }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="col-12">
+      <p class="text-muted">No products found.</p>
+    </div>
+  {% endif %}
+</div>
+
+<!-- Pagination (rendered outside when included in full shop page) -->
+{% if page_obj.has_other_pages %}
+  <nav aria-label="Page navigation example" id="ajax-pagination">
+    <ul class="pagination justify-content-center justify-content-lg-end">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">«</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">«</span></li>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">»</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">»</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

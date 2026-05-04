@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+
+      <div class="container py-5">
+        {% include 'partials/_messages.html' %}
+
+        <div class="jumbotron">
+          <h1>{{request.user.first_name}} {{request.user.last_name}}</h1>
+          <p><strong>Email:</strong> {{request.user.email}}</p>
+          <p><strong>Username:</strong> {{request.user.username}}</p>
+          <p><a class="btn btn-primary btn-large" href="{% url 'store:add-address' %}">Add Address »</a> <a class="btn btn-outline-primary btn-large" href="#">My Orders »</a></p>
+        </div>
+
+
+        <div class="row">
+
+          <div class="col-lg-6">
+            <div class="card mb-4" id="headings">
+              <div class="card-header">Addresses <span class="float-right"><a href="{% url 'store:add-address' %}">Add Address</a></span></div>
+              <div class="card-body">
+                {% if addresses %}
+                    {% for address in addresses %}
+                        <h4 class="mb-3">Address {{forloop.counter}}</h4> 
+                        
+                        <span class="float-right"><a href="{% url 'store:remove-address' address.id %}"><i class="fas fa-trash-alt small text-muted"></i></a></span>
+
+                        <p>
+                            <strong>Locality: </strong>{{address.locality}} <br>
+                            <strong>City: </strong>{{address.city}} <br>
+                            <strong>State: </strong>{{address.state}} <br>
+                            <strong>country: </strong>{{address.country}} <br>
+                        </p>
+
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                <div class="text-danger">
+                  Address not Added.
+                </div>
+                {% endif %}
+                
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card mb-4" id="tables">
+              <div class="card-header">Orders</div>
+              <div class="card-body">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Item</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if orders %}
+                      {% for order in orders %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td>{{order.product.title}}</td>
+                          <td>
+                            {{order.status}}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
+                    <tr>
+                      <td class="text-danger" colspan="3">You've not Ordered anything yet.</td>
+                    </tr>
+                    {% endif %}
+                    
+                    
+                  </tbody>
+                </table>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+    
+        
+        
+      </div>
+      <style>
+/* Orange Theme Buttons for Profile Page */
+
+/* Primary Orange Button */
+.btn-primary {
+    background-color: #FF6B35 !important;  /* Main orange */
+    border-color: #FF6B35 !important;
+    color: white !important;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 107, 53, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #E54B1A !important;  /* Darker orange for hover */
+    border-color: #E54B1A !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 107, 53, 0.3);
+}
+
+.btn-primary:active {
+    background-color: #CC3F0F !important;
+    border-color: #CC3F0F !important;
+    transform: translateY(0);
+}
+
+/* Outline Orange Button */
+.btn-outline-primary {
+    border: 2px solid #FF6B35 !important;
+    color: #FF6B35 !important;
+    background-color: transparent !important;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #FF6B35 !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 107, 53, 0.2);
+}
+
+.btn-outline-primary:active {
+    background-color: #E54B1A !important;
+    border-color: #E54B1A !important;
+    color: white !important;
+}
+
+/* Small buttons for Add Address in card */
+.btn-outline-primary.btn-sm {
+    padding: 5px 15px;
+    font-size: 14px;
+}
+
+.btn-outline-primary.btn-sm:hover {
+    background-color: #FF6B35 !important;
+    color: white !important;
+}
+
+/* For the "Add Address" link in card header */
+.card-header a {
+    color: #FF6B35 !important;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.card-header a:hover {
+    color: #E54B1A !important;
+    text-decoration: underline;
+}
+
+/* Jumbotron buttons specific styling */
+.jumbotron .btn-large {
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
+/* Optional: Add orange focus ring for accessibility */
+.btn-primary:focus, .btn-outline-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.5) !important;
+    outline: none;
+}
+
+/* If you want icons inside buttons to also match */
+.btn i {
+    margin-right: 5px;
+}
+
+.btn-primary i, .btn-outline-primary i {
+    color: currentColor;
+}
+      </style>
+{% endblock content %}

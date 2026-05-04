@@ -1,0 +1,1490 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.title }} - Buy Premium Adult Product in Pakistan | Desiretoys{% endblock title %}
+
+{% block meta_description %}{{ product.short_description|default:product.title|truncatechars:160 }} Shop {{ product.title }} at Desiretoys.pk - Pakistan's trusted adult products store. Discreet packaging, fast delivery, 100% authentic.{% endblock meta_description %}
+
+{% block meta_keywords %}{{ product.title }}, {{ product.category.title }} Pakistan, adult products, sex toys Pakistan, buy {{ product.title }} online, intimate wellness, {% for tag in product.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endblock meta_keywords %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'store:product-detail' product.slug %}{% endblock canonical_url %}
+
+{% block og_title %}{{ product.title }} - Premium Adult Product | Desiretoys Pakistan{% endblock og_title %}
+{% block og_description %}{{ product.short_description|default:product.title|truncatechars:200 }} Order with discreet delivery across Pakistan.{% endblock og_description %}
+{% block og_type %}product{% endblock og_type %}
+{% block og_image %}{% if product.product_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}{% endif %}{% endblock og_image %}
+
+{% block twitter_title %}{{ product.title }} - Desiretoys{% endblock twitter_title %}
+{% block twitter_description %}{{ product.short_description|default:product.title|truncatechars:200 }}{% endblock twitter_description %}
+{% block twitter_image %}{% if product.product_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}{% endif %}{% endblock twitter_image %}
+
+{% block content %}
+
+<!-- SEMANTIC HTML5 - H1 for product title -->
+<h1 class="visually-hidden">{{ product.title }} - Premium Adult Product</h1>
+
+<!-- Shipping Address Modal -->
+<div class="modal fade" id="shippingAddressModal" tabindex="-1" aria-labelledby="shippingLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, #fd7e14, #ff9b4c); color: white;">
+        <h5 class="modal-title" id="shippingLabel"><i class="fas fa-map-marker-alt me-2"></i>Add New Shipping Address</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="shippingForm" method="POST" action="{% url 'store:buy-now' %}">
+          {% csrf_token %}
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <input type="hidden" id="quantity-input" name="quantity" value="1">
+          
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="fullName" name="full_name" placeholder="Enter your first and last name" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number <span class="text-danger">*</span></label>
+            <input type="tel" class="form-control" id="phoneNumber" name="phone_number" placeholder="Please enter your phone number" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="buildingNo" class="form-label">Building / House No / Floor / Street <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="buildingNo" name="building_no" placeholder="Please enter" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="locality" class="form-label">Colony / Suburb / Locality / Landmark <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="locality" name="locality" placeholder="Please enter" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="province" class="form-label">Province <span class="text-danger">*</span></label>
+            <select class="form-control" id="province" name="province" required>
+              <option value="">Please choose your province</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Sindh">Sindh</option>
+              <option value="Khyber Pakhtunkhwa">Khyber Pakhtunkhwa</option>
+              <option value="Balochistan">Balochistan</option>
+              <option value="Islamabad">Islamabad</option>
+              <option value="Gilgit-Baltistan">Gilgit-Baltistan</option>
+              <option value="Azad Kashmir">Azad Kashmir</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="city" name="city" placeholder="Please choose your city" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="area" class="form-label">Area <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="area" name="area" placeholder="Please choose your area" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="address" name="address" rows="3" placeholder="For Example: House# 123, Street# 123, ABC Road" required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" form="shippingForm" class="btn btn-brand" onclick="document.getElementById('shippingForm').submit();">
+          <i class="fas fa-check me-2"></i>Place Order
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT SCHEMA MARKUP -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title|escapejs }}",
+  "image": [
+    {% if product.product_image %}"{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.url }}"{% endif %}
+    {% for img in images %},
+    "{{ request.scheme }}://{{ request.get_host }}{{ img.image.url }}"
+    {% endfor %}
+  ],
+  "description": "{{ product.short_description|default:product.title|escapejs|truncatechars:500 }}",
+  "sku": "{{ product.sku|default:product.id }}",
+  "mpn": "{{ product.sku|default:product.id }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ product.brand|default:'Desiretoys' }}"
+  },
+  {% if product.get_average_rating %}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.get_average_rating|floatformat:1 }}",
+    "reviewCount": "{{ reviews|length }}",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  {% endif %}
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ request.build_absolute_uri }}",
+    "priceCurrency": "PKR",
+    "price": "{{ product.seller_price }}",
+    "priceValidUntil": "{{ product.valid_until|default:'2025-12-31' }}",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/NewCondition",
+    "shippingDetails": {
+      "@type": "OfferShippingDetails",
+      "shippingRate": {
+        "@type": "MonetaryAmount",
+        "value": "0",
+        "currency": "PKR"
+      },
+      "deliveryTime": {
+        "@type": "ShippingDeliveryTime",
+        "handlingTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 1,
+          "maxValue": 2,
+          "unitCode": "DAY"
+        },
+        "transitTime": {
+          "@type": "QuantitativeValue",
+          "minValue": 2,
+          "maxValue": 5,
+          "unitCode": "DAY"
+        }
+      }
+    }
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "Category",
+      "value": "{{ product.category.title|default:'Adult Products' }}"
+    },
+    {% if product.sizes %}
+    {
+      "@type": "PropertyValue",
+      "name": "Size",
+      "value": "{{ product.sizes }}"
+    },
+    {% endif %}
+    {
+      "@type": "PropertyValue",
+      "name": "Delivery Time",
+      "value": "{{ product.delivery_time|default:'2-4 business days' }}"
+    }
+  ]
+}
+</script>
+
+<!-- BREADCRUMB SCHEMA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'store:home' %}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ product.category.title|default:'Products' }}",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'store:category-products' product.category.slug %}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ product.title|escapejs }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }
+  ]
+}
+</script>
+
+<section class="py-5">
+  <div class="container">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'store:shop' %}">Shop</a></li>
+        {% if product.category %}
+        <li class="breadcrumb-item"><a href="{% url 'store:category-products' product.category.slug %}">{{ product.category.title }}</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">{{ product.title|truncatechars:50 }}</li>
+      </ol>
+    </nav>
+
+    <div class="row mb-5">
+
+      <!-- PRODUCT SLIDER WITH THUMBNAILS -->
+      <div class="col-lg-6">
+        <div class="product-gallery" style="position: relative;">
+          <div class="main-image-container" style="background: #f8f9fa; border-radius: 15px; overflow: hidden; margin-bottom: 15px; position: relative; height: 700px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+            {% if product.product_image %}
+              <img id="main-product-image" class="img-fluid" src="{{ product.product_image.url }}" alt="{{ product.title }} - Premium adult product at Desiretoys" style="max-height: 100%; max-width: 100%; object-fit: contain; cursor: zoom-in; transition: opacity 0.3s ease;" data-lightbox="product-main" itemprop="image">
+            {% else %}
+              <img id="main-product-image" class="img-fluid" src="{% static 'img/product-detail-1.jpg' %}" alt="{{ product.title }}" style="max-height: 100%; max-width: 100%; object-fit: contain; cursor: zoom-in; transition: opacity 0.3s ease;">
+            {% endif %}
+            
+            <div style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #fd7e14, #ff9b4c); color: white; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 600; z-index: 10;">
+              <i class="fas fa-images me-1"></i><span id="image-counter">1</span>/<span id="total-counter">1</span>
+            </div>
+
+            <button type="button" id="prev-btn" class="nav-button prev-button" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); background: rgba(253, 126, 20, 0.9); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 22px; transition: all 0.3s ease; z-index: 10; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" aria-label="Previous image">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <button type="button" id="next-btn" class="nav-button next-button" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: rgba(253, 126, 20, 0.9); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 22px; transition: all 0.3s ease; z-index: 10; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" aria-label="Next image">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <div class="product-thumbnails">
+            <div class="thumbnails-wrapper" style="display: flex; gap: 10px; overflow-x: auto; padding: 10px; border-radius: 10px; background: #f8f9fa;">
+              
+              {% if product.product_image %}
+              <div class="thumbnail-item" data-index="0" style="flex-shrink: 0; cursor: pointer; border-radius: 10px; overflow: hidden; border: 3px solid #fd7e14; transition: all 0.3s ease; width: 90px; height: 90px; background: white; display: flex; align-items: center; justify-content: center;" title="Click to view main image">
+                <img src="{{ product.product_image.url }}" alt="{{ product.title }} - thumbnail" style="max-height: 100%; max-width: 100%; object-fit: contain; cursor: pointer;">
+              </div>
+              {% endif %}
+
+              {% for img in images %}
+              <div class="thumbnail-item" data-index="{{ forloop.counter }}" style="flex-shrink: 0; cursor: pointer; border-radius: 10px; overflow: hidden; border: 3px solid #ecf0f1; transition: all 0.3s ease; width: 90px; height: 90px; background: white; display: flex; align-items: center; justify-content: center;" title="Click to view image">
+                <img src="{{ img.image.url }}" alt="{{ product.title }} - product image {{ forloop.counter }}" style="max-height: 100%; max-width: 100%; object-fit: contain; cursor: pointer;">
+              </div>
+              {% endfor %}
+
+              {% if not product.product_image and not images %}
+              <div class="thumbnail-item" data-index="0" style="flex-shrink: 0; cursor: pointer; border-radius: 10px; overflow: hidden; border: 3px solid #fd7e14; transition: all 0.3s ease; width: 90px; height: 90px; background: white; display: flex; align-items: center; justify-content: center;">
+                <img src="{% static 'img/product-detail-1.jpg' %}" alt="{{ product.title }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+              </div>
+              {% endif %}
+
+            </div>
+          </div>
+
+          {% with total_images=images|length|add:1 %}
+          <small style="color: #7f8c8d; margin-top: 10px; display: block; text-align: center;">
+            <i class="fas fa-info-circle me-1" style="color: #fd7e14;"></i>
+            Total {{ total_images }} image{% if total_images != 1 %}s{% endif %} - Click or use arrow buttons to navigate
+          </small>
+          {% endwith %}
+        </div>
+      </div>
+
+      <!-- PRODUCT DETAILS -->
+      <div class="col-lg-6">
+        <h1 class="product-title-main" style="font-size: 1.8rem; font-weight: 700; color: #2c3e50; margin-bottom: 15px;">{{ product.title }}</h1>
+        
+        <div class="product-rating-wrapper mb-3">
+          <ul class="list-inline mb-2">
+            {% with avg_rating=product.get_average_rating %}
+              {% for i in "12345"|make_list %}
+                <li class="list-inline-item m-0">
+                  <i class="fas fa-star {% if forloop.counter <= avg_rating %}text-warning{% else %}text-muted{% endif %}"></i>
+                </li>
+              {% endfor %}
+              <li class="list-inline-item">
+                <small class="text-muted">({{ reviews|length }} customer reviews)</small>
+              </li>
+            {% endwith %}
+          </ul>
+        </div>
+
+        <!-- PRICING SECTION -->
+        <div class="pricing-section mb-3 p-3 bg-light rounded" style="border-left: 4px solid #fd7e14;">
+          {% if product.retail_price and product.retail_price > product.seller_price %}
+            <div class="mb-2">
+              <small class="text-muted">Retail Price: <span style="text-decoration: line-through;">RS {{ product.retail_price }}</span></small>
+            </div>
+            <div class="mb-2">
+              <h3 class="text-warning" style="font-weight: 700; margin: 0;">RS {{ product.seller_price }}</h3>
+              <small class="text-success" style="font-weight: 600;">
+                <i class="fas fa-tag me-1"></i>Save {{ product.get_discount_percentage }}%
+              </small>
+            </div>
+          {% else %}
+            <div class="mb-2">
+              <small class="text-muted">Price:</small>
+            </div>
+            <div>
+              <h3 class="text-warning" style="font-weight: 700; margin: 0;">RS {{ product.seller_price }}</h3>
+            </div>
+          {% endif %}
+          
+          <div class="mt-2 pt-2" style="border-top: 1px solid #ddd;">
+            <small class="text-muted d-block">
+              <strong>Seller Price:</strong> RS {{ product.seller_price }}
+            </small>
+            <small class="text-muted d-block">
+              <strong>Retail Price:</strong> RS {{ product.retail_price }}
+            </small>
+          </div>
+        </div>
+
+        <p class="text-small mb-2"><strong>SKU:</strong> {{ product.sku|default:product.id }}</p>
+       
+        <!-- BUTTONS SECTION -->
+        <div class="row align-items-stretch mb-4">
+          <div class="col-sm-5 pr-sm-0 mb-3 mb-sm-0">
+            <div class="quantity-wrapper bg-white">
+              <div class="quantity">
+                <button class="dec-btn p-0" aria-label="Decrease quantity"><i class="fas fa-caret-left"></i></button>
+                <input id="product-quantity" class="form-control border-0 shadow-0 p-0" type="text" value="1" min="1" aria-label="Product quantity">
+                <button class="inc-btn p-0" aria-label="Increase quantity"><i class="fas fa-caret-right"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-7 pl-sm-0">
+            <div class="action-buttons">
+              <button type="button" class="btn btn-add-to-cart" data-bs-toggle="modal" data-bs-target="#shippingAddressModal">
+                <i class="fas fa-shopping-cart"></i> 
+                <span class="d-sm-none">Add</span>
+                <span class="d-none d-sm-inline">Add to Cart</span>
+              </button>
+              
+              <button type="button" class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#shippingAddressModal">
+                <i class="fas fa-bolt"></i> 
+                <span class="d-sm-none">Buy</span>
+                <span class="d-none d-sm-inline">Buy Now</span>
+              </button>
+            </div>
+          </div>
+
+          {% if company_info and company_info.whatsapp_number %}
+          <div class="col-12 mt-3">
+            <button type="button" class="btn btn-whatsapp-official w-100" onclick="openWhatsApp('{{ product.title|escapejs }}', '{{ product.seller_price }}', '{{ company_info.whatsapp_number|default:"" }}')">
+              <i class="fab fa-whatsapp"></i> 
+              <span>Contact on WhatsApp</span>
+            </button>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- BRAND & SIZES -->
+        <div class="row mt-4">
+          {% if product.brand %}
+          <div class="col-sm-6 mb-3">
+            <div class="bg-light p-3 rounded">
+              <small class="text-muted d-block mb-1"><i class="fas fa-tag me-1"></i><strong>Brand</strong></small>
+              <h6 class="mb-0" style="color: #fd7e14; font-weight: 600;">{{ product.brand }}</h6>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if product.sizes %}
+          <div class="col-sm-6 mb-3">
+            <div class="bg-light p-3 rounded">
+              <small class="text-muted d-block mb-1"><i class="fas fa-ruler me-1"></i><strong>Available Sizes</strong></small>
+              <h6 class="mb-0" style="color: #fd7e14; font-weight: 600;">{{ product.sizes }}</h6>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- PRODUCT SPECIFICATIONS SECTION - FROM ADMIN PANEL -->
+        {% if product.specifications.all %}
+        <div class="product-specifications mt-4">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom p-0" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#specificationsCollapse">
+              <div class="p-3 d-flex align-items-center justify-content-between" style="user-select: none;">
+                <div>
+                  <h3 class="h6 mb-0" style="color: #333; font-weight: 600;">
+                    <i class="fas fa-info-circle me-2" style="color: #fd7e14;"></i>Product Specification
+                  </h3>
+                </div>
+                <i class="fas fa-chevron-down" id="specsChevron" style="color: #fd7e14; transition: transform 0.3s ease;"></i>
+              </div>
+            </div>
+            <div class="collapse show" id="specificationsCollapse">
+              <div class="card-body" style="background: #fafafa;">
+                <div class="specs-grid">
+                  {% for spec in product.specifications.all %}
+                    {% if spec.is_active and spec.spec_value %}
+                    <div class="spec-item">
+                      <div class="spec-key-wrapper">
+                        <i class="fas fa-tag me-2" style="color: #fd7e14; font-size: 12px;"></i>
+                        <span class="spec-key">{{ spec.spec_key }}:</span>
+                      </div>
+                      <div class="spec-value-wrapper">
+                        <span class="spec-value">{{ spec.spec_value }}</span>
+                      </div>
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- KEY SPECIFICATIONS BADGES -->
+        {% if product.specifications.all %}
+        <div class="key-specs-badges mt-3">
+          <div class="d-flex flex-wrap gap-2">
+            {% for spec in product.specifications.all %}
+              {% if spec.is_active and spec.spec_value and forloop.counter <= 4 %}
+              <span class="spec-badge">
+                <i class="fas fa-check-circle me-1" style="font-size: 10px;"></i>
+                {{ spec.spec_key }}: {{ spec.spec_value|truncatechars:30 }}
+              </span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- DELIVERY TIME SECTION -->
+        {% if product.delivery_time %}
+        <div class="mt-4">
+          <div class="card border-0 shadow-sm" style="border-top: 3px solid #fd7e14;">
+            <div class="card-header bg-white border-bottom p-0" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#deliveryTimeCollapse">
+              <div class="p-3 d-flex align-items-center justify-content-between" style="user-select: none;">
+                <div>
+                  <h2 class="h6 mb-0" style="color: #333; font-weight: 600;">
+                    <i class="fas fa-truck me-2" style="color: #fd7e14;"></i>Delivery Time
+                  </h2>
+                </div>
+                <i class="fas fa-chevron-down" id="deliveryChevron" style="color: #fd7e14; transition: transform 0.3s ease;"></i>
+              </div>
+            </div>
+            <div class="collapse show" id="deliveryTimeCollapse">
+              <div class="card-body pt-3 pb-3" style="background: #fafafa;">
+                <p class="mb-0 text-muted" style="white-space: pre-wrap; line-height: 1.6;">{{ product.delivery_time }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- REFUND & RETURN POLICY SECTION -->
+        {% if product.refund_and_return_policy %}
+        <div class="mt-3">
+          <div class="card border-0 shadow-sm" style="border-top: 3px solid #fd7e14;">
+            <div class="card-header bg-white border-bottom p-0" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#refundPolicyCollapse">
+              <div class="p-3 d-flex align-items-center justify-content-between" style="user-select: none;">
+                <div>
+                  <h2 class="h6 mb-0" style="color: #333; font-weight: 600;">
+                    <i class="fas fa-undo me-2" style="color: #fd7e14;"></i>Refund & Return Policy
+                  </h2>
+                </div>
+                <i class="fas fa-chevron-down" id="refundChevron" style="color: #fd7e14; transition: transform 0.3s ease;"></i>
+              </div>
+            </div>
+            <div class="collapse show" id="refundPolicyCollapse">
+              <div class="card-body pt-3 pb-3" style="background: #fafafa;">
+                <p class="mb-0 text-muted" style="white-space: pre-wrap; line-height: 1.6;">{{ product.refund_and_return_policy }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- SHARE OPTIONS SECTION -->
+        <div class="mt-4 p-3 bg-light rounded">
+          <h3 class="h6 mb-3" style="color: #333; font-weight: 600;">
+            <i class="fas fa-share-alt me-2" style="color: #fd7e14;"></i>Share this product:
+          </h3>
+          <div class="d-flex gap-3 flex-wrap">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn btn-sm rounded-circle" style="background: #1877f2; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" title="Share on Facebook">
+              <i class="fab fa-facebook-f" style="font-size: 18px;"></i>
+            </a>
+
+            <a href="https://twitter.com/intent/tweet?text={{ product.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn btn-sm rounded-circle" style="background: #1DA1F2; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" title="Share on Twitter">
+              <i class="fab fa-twitter" style="font-size: 18px;"></i>
+            </a>
+
+            {% if product.enable_pinterest_share %}
+            <a href="https://pinterest.com/pin/create/button/?url={{ request.build_absolute_uri|urlencode }}&description={{ product.title|urlencode }}&media={% if product.product_image %}{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.url }}{% endif %}" target="_blank" class="btn btn-sm rounded-circle" style="background: #e60023; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" title="Share on Pinterest">
+              <i class="fab fa-pinterest-p" style="font-size: 18px;"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Product Details List -->
+        <ul class="list-unstyled small d-inline-block mt-4">
+          <li class="px-3 py-2 mb-1 bg-white">
+            <strong>Why Buy This:</strong>
+            <span class="ml-2 text-muted">{{ product.short_description }}</span>
+          </li>
+          <li class="px-3 py-2 mb-1 bg-white text-muted">
+            <strong>Category:</strong>
+            <a class="reset-anchor ml-2" href="{% url 'store:category-products' product.category.slug %}">
+              {{ product.category }}
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <!-- DETAILS TABS -->
+    <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-selected="true">Description</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-selected="false">Reviews ({{ reviews|length }})</button>
+      </li>
+    </ul>
+
+    <div class="tab-content mb-5">
+
+      <!-- DESCRIPTION -->
+      <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+        <div class="p-4 p-lg-5 bg-white">
+          <h2 class="h5 text-uppercase">Product Description</h2>
+          <div class="text-muted text-small mb-0">
+            {{ product.detail_description|safe }}
+          </div>
+        </div>
+      </div>
+
+      <!-- REVIEWS -->
+      <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+        <div class="p-4 p-lg-5 bg-white">
+          <h3 class="h5 mb-4">Customer Reviews for {{ product.title }}</h3>
+
+          {% for review in reviews %}
+          <div class="mb-4 border-bottom pb-3" itemprop="review" itemscope itemtype="https://schema.org/Review">
+            <strong itemprop="author">{{ review.user.username }}</strong>
+            <div itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
+              {% for i in "12345"|make_list %}
+                {% if forloop.counter <= review.rating %}
+                  <i class="fas fa-star text-warning"></i>
+                {% else %}
+                  <i class="far fa-star text-warning"></i>
+                {% endif %}
+              {% endfor %}
+              <meta itemprop="ratingValue" content="{{ review.rating }}">
+              <meta itemprop="bestRating" content="5">
+            </div>
+            <p class="text-muted mt-2" itemprop="reviewBody">{{ review.comment }}</p>
+            {% if review.image %}
+              <img src="{{ review.image.url }}" width="120" class="mt-2 rounded" alt="Customer review image for {{ product.title }}">
+            {% endif %}
+            <small class="text-muted d-block mt-2" itemprop="datePublished">
+              {{ review.created_at|date:"M d, Y" }}
+            </small>
+          </div>
+          {% empty %}
+          <p>No reviews yet. Be the first to review {{ product.title }}!</p>
+          {% endfor %}
+        </div>
+
+        <!-- REVIEW FORM -->
+        {% if user.is_authenticated %}
+        <div class="p-4 bg-light">
+          <h3 class="h6">Write a Review for {{ product.title }}</h3>
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+              <label>Rating</label>
+              <select name="rating" class="form-control" required>
+                <option value="5">5 Stars - Excellent</option>
+                <option value="4">4 Stars - Very Good</option>
+                <option value="3">3 Stars - Good</option>
+                <option value="2">2 Stars - Fair</option>
+                <option value="1">1 Star - Poor</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label>Your Review</label>
+              <textarea name="comment" class="form-control" rows="3" placeholder="Share your experience with this product..." required></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <label>Upload Image (Optional)</label>
+              <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-brand mt-2">Submit Review</button>
+          </form>
+        </div>
+        {% else %}
+          <p class="mt-3">Please <a href="{% url 'store:login' %}">login</a> to write a review for this product.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- RELATED PRODUCTS SECTION -->
+    <section aria-label="Related products you might like">
+      <h2 class="h5 text-uppercase mb-4">You May Also Like</h2>
+      <div class="row">
+        {% for rp in related_products %}
+        <div class="col-lg-3 col-sm-6 mb-4">
+          <article class="product" itemscope itemtype="https://schema.org/Product">
+            <div class="product-image-wrapper">
+              <a href="{% url 'store:product-detail' rp.slug %}">
+                {% if rp.product_image %}
+                <img src="{{ rp.product_image.url }}" alt="{{ rp.title }}" itemprop="image">
+                {% else %}
+                <img src="{% static 'img/product-1.jpg' %}" alt="{{ rp.title }}" itemprop="image">
+                {% endif %}
+              </a>
+              
+              <div class="product-overlay">
+                <ul>
+                  <li>
+                    <a href="{% url 'store:product-detail' rp.slug %}?action=add-to-cart" class="btn-shop-icon" aria-label="Add {{ rp.title }} to cart">
+                      <i class="fas fa-shopping-cart"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'store:product-detail' rp.slug %}" class="btn-shop-icon" aria-label="View {{ rp.title }} details">
+                      <i class="fas fa-eye"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {% if rp.is_new or rp.is_sale %}
+              <div class="product-badge">
+                {% if rp.is_sale %}
+                <span class="badge-sale">SALE</span>
+                {% elif rp.is_new %}
+                <span class="badge-new">NEW</span>
+                {% endif %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="product-info">
+              <h3 class="product-title h6">
+                <a href="{% url 'store:product-detail' rp.slug %}" itemprop="name">
+                  {{ rp.title|truncatechars:20 }}
+                </a>
+              </h3>
+              
+              <div class="product-rating">
+                {% with avg_rating=rp.get_average_rating %}
+                <div class="stars">
+                  {% for i in "12345"|make_list %}
+                  <i class="fas fa-star" style="color: {% if forloop.counter <= avg_rating %}#f39c12{% else %}#ddd{% endif %};"></i>
+                  {% endfor %}
+                </div>
+                <span class="rating-text">({{ avg_rating|floatformat:1 }})</span>
+                {% endwith %}
+              </div>
+              
+              <div class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                {% if rp.retail_price and rp.retail_price > rp.seller_price %}
+                <span class="old-price">RS {{ rp.retail_price }}</span>
+                <span class="current-price" itemprop="price" content="{{ rp.seller_price }}">RS {{ rp.seller_price }}</span>
+                <span class="discount-badge" style="font-size: 0.75rem; color: #27ae60;">{{ rp.get_discount_percentage }}% OFF</span>
+                {% else %}
+                <span class="current-price" itemprop="price" content="{{ rp.seller_price }}">RS {{ rp.seller_price }}</span>
+                {% endif %}
+                <meta itemprop="priceCurrency" content="PKR">
+              </div>
+            </div>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- CSS STYLES -->
+<style>
+/* ===== SEARCH BUTTON STYLE (MATCHING BASE.HTML) ===== */
+.btn-brand {
+  background: linear-gradient(135deg, #fd7e14, #ff9b4c) !important;
+  border: none !important;
+  border-radius: 25px !important;
+  padding: 11px 28px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 14px rgba(253, 126, 20, 0.28) !important;
+  color: #fff !important;
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 45px !important;
+}
+
+.btn-brand:hover {
+  background: linear-gradient(135deg, #e56700, #fd7e14) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 22px rgba(253, 126, 20, 0.38) !important;
+  color: #fff !important;
+}
+
+.btn-brand:active {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(253, 126, 20, 0.28) !important;
+}
+
+.btn-brand:focus {
+  box-shadow: 0 0 0 4px rgba(253, 126, 20, 0.12) !important;
+  outline: none !important;
+}
+
+.btn-brand i {
+  font-size: 13px !important;
+  transition: transform 0.3s ease !important;
+}
+
+.btn-brand:hover i {
+  transform: scale(1.1) !important;
+}
+
+.btn-add-to-cart {
+  background: #fff !important;
+  border: 2px solid #fd7e14 !important;
+  border-radius: 25px !important;
+  padding: 9px 26px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 10px rgba(253, 126, 20, 0.1) !important;
+  color: #fd7e14 !important;
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 45px !important;
+}
+
+.btn-add-to-cart:hover {
+  background: #fd7e14 !important;
+  border-color: #ff9b4c !important;
+  color: #fff !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(253, 126, 20, 0.3) !important;
+}
+
+.btn-add-to-cart:active {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(253, 126, 20, 0.2) !important;
+}
+
+.btn-add-to-cart:focus {
+  box-shadow: 0 0 0 4px rgba(253, 126, 20, 0.12) !important;
+  outline: none !important;
+}
+
+.btn-add-to-cart i {
+  font-size: 13px !important;
+  transition: transform 0.3s ease !important;
+}
+
+.btn-add-to-cart:hover i {
+  transform: scale(1.1) rotate(5deg) !important;
+}
+
+.btn-whatsapp-official {
+  background: #25D366 !important;
+  border: none !important;
+  border-radius: 25px !important;
+  padding: 11px 28px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.28) !important;
+  color: #fff !important;
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 45px !important;
+  margin-top: 12px !important;
+}
+
+.btn-whatsapp-official:hover {
+  background: #20ba58 !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 22px rgba(37, 211, 102, 0.4) !important;
+  color: #fff !important;
+}
+
+.btn-whatsapp-official:active {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.28) !important;
+}
+
+.btn-whatsapp-official:focus {
+  box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.2) !important;
+  outline: none !important;
+}
+
+.btn-whatsapp-official i {
+  font-size: 16px !important;
+  transition: transform 0.3s ease !important;
+}
+
+.btn-whatsapp-official:hover i {
+  transform: scale(1.15) !important;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.action-buttons .btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+.quantity-wrapper {
+  height: 45px;
+  border-radius: 25px;
+  border: 2px solid #e8e8e8;
+  background-color: #fafafa;
+  overflow: hidden;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 10px;
+}
+
+.quantity button {
+  background: none;
+  border: none;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fd7e14;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+.quantity button:hover {
+  background: rgba(253, 126, 20, 0.1);
+  transform: scale(1.1);
+}
+
+.quantity input {
+  width: 40px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.quantity input:focus {
+  outline: none;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #fd7e14, #ff9b4c) !important;
+}
+
+.nav-button:hover {
+  background: linear-gradient(135deg, #fd7e14, #ff9b4c) !important;
+  transform: translateY(-50%) scale(1.1) !important;
+  box-shadow: 0 6px 18px rgba(253, 126, 20, 0.4) !important;
+}
+
+.nav-button:active {
+  transform: translateY(-50%) scale(0.95) !important;
+}
+
+.thumbnail-item {
+  transition: all 0.3s ease;
+}
+
+.thumbnail-item:hover {
+  transform: scale(1.05);
+  border-color: #fd7e14 !important;
+}
+
+.product {
+  transition: all 0.3s ease;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product:hover {
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+}
+
+.product-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.product-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product:hover .product-image-wrapper img {
+  transform: scale(1.05);
+}
+
+.product-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product:hover .product-overlay {
+  opacity: 1;
+}
+
+.product-overlay ul {
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.btn-shop-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fd7e14;
+  color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-shop-icon i {
+  color: white;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.btn-shop-icon:hover {
+  background-color: #ff9b4c;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(253, 126, 20, 0.4);
+  color: white;
+}
+
+.btn-shop-icon:hover i {
+  color: white;
+}
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+}
+
+.badge-sale {
+  background-color: #dc3545;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-new {
+  background-color: #28a745;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.product-info {
+  padding: 15px;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-title {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.product-title a {
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.product-title a:hover {
+  color: #fd7e14;
+}
+
+.product-rating {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.product-rating .stars {
+  display: flex;
+  gap: 2px;
+}
+
+.product-rating .stars i {
+  font-size: 0.75rem;
+}
+
+.rating-text {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.product-price {
+  font-size: 1rem;
+  margin-top: auto;
+}
+
+.current-price {
+  color: #fd7e14;
+  font-weight: 700;
+}
+
+.old-price {
+  color: #6c757d;
+  text-decoration: line-through;
+  font-size: 0.85rem;
+  margin-right: 5px;
+}
+
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+}
+
+.breadcrumb-item a {
+  color: #fd7e14;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}
+
+/* Product Specifications Styles */
+.product-specifications .card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.product-specifications .card-header {
+    background: white;
+    border-bottom: 1px solid #eef2f6;
+}
+
+.product-specifications .card-header:hover {
+    background: #fef9f4;
+}
+
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 16px;
+}
+
+.spec-item {
+    display: flex;
+    align-items: baseline;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border: 1px solid #eef2f6;
+}
+
+.spec-item:hover {
+    border-color: #fd7e14;
+    box-shadow: 0 2px 8px rgba(253, 126, 20, 0.1);
+    transform: translateX(3px);
+}
+
+.spec-key-wrapper {
+    min-width: 180px;
+    display: flex;
+    align-items: center;
+}
+
+.spec-key {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+}
+
+.spec-value-wrapper {
+    flex: 1;
+}
+
+.spec-value {
+    color: #6c7a8e;
+    font-size: 0.85rem;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+/* Key Specifications Badges */
+.key-specs-badges {
+    margin-top: 15px;
+}
+
+.spec-badge {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, #fef5e8, #fff);
+    border: 1px solid #fde4c5;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    color: #2c3e50;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.spec-badge:hover {
+    background: #fd7e14;
+    border-color: #fd7e14;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.spec-badge:hover i {
+    color: white;
+}
+
+@media (max-width: 768px) {
+  .btn-brand, .btn-add-to-cart, .btn-whatsapp-official {
+    font-size: 12px !important;
+    padding: 8px 16px !important;
+    height: 40px !important;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .quantity-wrapper {
+    height: 40px;
+    width: 100%;
+  }
+  
+  .btn-shop-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .btn-shop-icon i {
+    font-size: 1rem;
+  }
+  
+  .product-overlay ul {
+    gap: 15px;
+  }
+
+  .product-title-main {
+    font-size: 1.4rem !important;
+  }
+  
+  .specs-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .spec-item {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+  
+  .spec-key-wrapper {
+    min-width: auto;
+  }
+  
+  .spec-key {
+    font-size: 0.8rem;
+  }
+  
+  .spec-value {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn-brand, .btn-add-to-cart, .btn-whatsapp-official {
+    font-size: 11px !important;
+    padding: 6px 12px !important;
+  }
+  
+  .btn-whatsapp-official i {
+    font-size: 14px !important;
+  }
+
+  .product-title-main {
+    font-size: 1.2rem !important;
+  }
+  
+  .spec-badge {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
+}
+</style>
+
+<!-- JAVASCRIPT -->
+<script>
+// Product Gallery JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+  const galleryImages = [
+    {% if product.product_image %}'{{ product.product_image.url }}'{% else %}'{% static 'img/product-detail-1.jpg' %}'{% endif %}
+    {% for img in images %},
+    '{{ img.image.url }}'
+    {% endfor %}
+  ];
+
+  let currentImageIndex = 0;
+
+  function updateImageCounter() {
+    const counter = document.getElementById('image-counter');
+    const total = document.getElementById('total-counter');
+    if (counter) counter.textContent = currentImageIndex + 1;
+    if (total) total.textContent = galleryImages.length;
+  }
+
+  function updateThumbnailSelection() {
+    const thumbnails = document.querySelectorAll('.thumbnail-item');
+    thumbnails.forEach((thumb, idx) => {
+      if (idx === currentImageIndex) {
+        thumb.style.borderColor = '#fd7e14';
+        thumb.style.transform = 'scale(1.05)';
+      } else {
+        thumb.style.borderColor = '#ecf0f1';
+        thumb.style.transform = 'scale(1)';
+      }
+    });
+  }
+
+  function setImageByIndex(index) {
+    if (index < 0 || index >= galleryImages.length) return;
+    
+    currentImageIndex = index;
+    const mainImage = document.getElementById('main-product-image');
+    const newImageUrl = galleryImages[index];
+    
+    mainImage.style.opacity = '0.5';
+    setTimeout(() => {
+      mainImage.src = newImageUrl;
+      mainImage.style.opacity = '1';
+    }, 150);
+    
+    updateThumbnailSelection();
+    updateImageCounter();
+  }
+
+  function nextImage() {
+    if (currentImageIndex < galleryImages.length - 1) {
+      setImageByIndex(currentImageIndex + 1);
+    } else {
+      setImageByIndex(0);
+    }
+  }
+
+  function prevImage() {
+    if (currentImageIndex > 0) {
+      setImageByIndex(currentImageIndex - 1);
+    } else {
+      setImageByIndex(galleryImages.length - 1);
+    }
+  }
+
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const thumbnails = document.querySelectorAll('.thumbnail-item');
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      prevImage();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      nextImage();
+    });
+  }
+
+  thumbnails.forEach((thumb) => {
+    thumb.addEventListener('click', function(e) {
+      e.preventDefault();
+      const index = parseInt(this.getAttribute('data-index'));
+      setImageByIndex(index);
+    });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'ArrowRight') nextImage();
+  });
+
+  if (thumbnails.length > 0) {
+    setImageByIndex(0);
+  }
+
+  // Quantity selector
+  const quantityInput = document.getElementById('product-quantity');
+  if (quantityInput) {
+    const decBtn = document.querySelector('.dec-btn');
+    const incBtn = document.querySelector('.inc-btn');
+    
+    if (decBtn) {
+      decBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        let val = parseInt(quantityInput.value) || 1;
+        if (val > 1) {
+          quantityInput.value = val - 1;
+        }
+      });
+    }
+    
+    if (incBtn) {
+      incBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        let val = parseInt(quantityInput.value) || 1;
+        quantityInput.value = val + 1;
+      });
+    }
+  }
+
+  // Handle collapse chevron animations
+  const specsCollapse = document.getElementById('specificationsCollapse');
+  if (specsCollapse) {
+    specsCollapse.addEventListener('show.bs.collapse', function() {
+      const specsChevron = document.getElementById('specsChevron');
+      if (specsChevron) specsChevron.style.transform = 'rotate(180deg)';
+    });
+    specsCollapse.addEventListener('hide.bs.collapse', function() {
+      const specsChevron = document.getElementById('specsChevron');
+      if (specsChevron) specsChevron.style.transform = 'rotate(0deg)';
+    });
+  }
+
+  const deliveryTimeCollapse = document.getElementById('deliveryTimeCollapse');
+  if (deliveryTimeCollapse) {
+    deliveryTimeCollapse.addEventListener('show.bs.collapse', function() {
+      const deliveryChevron = document.getElementById('deliveryChevron');
+      if (deliveryChevron) deliveryChevron.style.transform = 'rotate(180deg)';
+    });
+    deliveryTimeCollapse.addEventListener('hide.bs.collapse', function() {
+      const deliveryChevron = document.getElementById('deliveryChevron');
+      if (deliveryChevron) deliveryChevron.style.transform = 'rotate(0deg)';
+    });
+  }
+
+  const refundPolicyCollapse = document.getElementById('refundPolicyCollapse');
+  if (refundPolicyCollapse) {
+    refundPolicyCollapse.addEventListener('show.bs.collapse', function() {
+      const refundChevron = document.getElementById('refundChevron');
+      if (refundChevron) refundChevron.style.transform = 'rotate(180deg)';
+    });
+    refundPolicyCollapse.addEventListener('hide.bs.collapse', function() {
+      const refundChevron = document.getElementById('refundChevron');
+      if (refundChevron) refundChevron.style.transform = 'rotate(0deg)';
+    });
+  }
+});
+
+function openWhatsApp(productTitle, productPrice, whatsappNumber) {
+  const cleanNumber = whatsappNumber.replace(/[^0-9+]/g, '');
+  const quantity = document.getElementById('product-quantity')?.value || '1';
+  const productUrl = window.location.href;
+  
+  const message = `🛍️ *Product Inquiry from Desiretoys*\n\n` +
+                  `*Product:* ${productTitle}\n` +
+                  `*Price:* RS ${productPrice}\n` +
+                  `*Quantity:* ${quantity}\n` +
+                  `*URL:* ${productUrl}\n\n` +
+                  `I'm interested in this product. Please provide more information.`;
+  
+  const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, '_blank');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('shippingAddressModal');
+  if (modal) {
+    modal.addEventListener('show.bs.modal', function() {
+      const quantityInput = document.getElementById('quantity-input');
+      const productQuantity = document.getElementById('product-quantity');
+      if (quantityInput && productQuantity) {
+        quantityInput.value = productQuantity.value;
+      }
+    });
+  }
+});
+</script>
+
+{% endblock content %}

@@ -1,0 +1,948 @@
+{% load static %}
+
+<!-- ================= MODERN NAVBAR WITH PERFECT SEARCH BAR & CATEGORIES ================= -->
+<header class="header bg-white shadow-sm sticky-top">
+  <!-- Top Bar with Welcome Message -->
+  <div class="top-bar-premium">
+    <div class="container">
+      <div class="row align-items-center gy-2">
+        <div class="col-md-7 col-12 text-center text-md-start">
+          <span class="top-contact"><i class="fas fa-heart" style="color: #dc2626;"></i> WELCOME TO DESIRETOYS.PK!</span>
+        </div>
+        <div class="col-md-5 col-12 text-center text-md-end top-links">
+          <span class="separator-dot"></span>
+          <a href="{% url 'store:contact' %}"><i class="fas fa-headset"></i> Contact Us</a>
+          <span class="separator-dot"></span>
+          {% if not request.user.is_authenticated %}
+            <a href="{% url 'store:login' %}"><i class="fas fa-sign-in-alt"></i> Login/Register</a>
+          {% else %}
+            <a href="{% url 'store:profile' %}"><i class="fas fa-user"></i> My Account</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navbar with Logo & Search -->
+  <div class="navbar-main-wrapper">
+    <div class="container">
+      <div class="navbar-flex-container">
+        
+       <a class="desiretoys-logo" href="{% url 'store:home' %}">
+  <img src="{% static 'img/desiretoy.png' %}" 
+       alt="DesireToys" 
+       class="logo-image"
+       width="250" 
+       height="120">
+</a>
+        
+        <!-- ================= PERFECT SEARCH BAR - RESIZED WIDTH & LENGTH ================= -->
+        <div class="global-search-container">
+          <form method="get" action="{% url 'store:shop' %}" role="search">
+            <!-- Category dropdown - properly visible on left -->
+            <div class="category-select-wrapper">
+             <select name="category" aria-label="Select category">
+                <option value="">All Categories</option>
+                {% for cat in categories_menu %}
+                  <option value="{{ cat.slug }}">{{ cat.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            
+            <!-- Search input - takes remaining width -->
+            <div class="search-input-wrapper">
+              <input type="search" name="q" placeholder="Search premium adult products, sex toys & intimate wellness items...">
+            </div>
+            
+            <!-- Search button - SIMPLE STYLE (not red) -->
+            <button class="btn-brand-search-simple" type="submit">
+              <i class="fas fa-search"></i><span>SEARCH</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right Side Icons - Orders & Cart + Account -->
+        <div class="nav-icon-items">
+          <!-- Orders Cart -->
+          <a class="simple-nav-link" href="{% url 'store:orders' %}">
+            <div class="cart-wrapper">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count" id="cartItemCount" style="display: none;">0</span>
+            </div>
+            <span>Orders</span>
+          </a>
+          
+          <!-- Account Dropdown -->
+          <div class="dropdown">
+            <button class="simple-nav-link account-dropdown-btn dropdown-toggle" type="button" id="userDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              {% if request.user.is_authenticated %}
+                <div class="avatar-simple">
+                  {% if request.user.profile and request.user.profile.image %}
+                    <img src="{{ request.user.profile.image.url }}" alt="{{ request.user.username }} avatar">
+                  {% else %}
+                    <i class="fas fa-user-alt"></i>
+                  {% endif %}
+                </div>
+              {% else %}
+                <div class="avatar-simple"><i class="fas fa-user-alt"></i></div>
+              {% endif %}
+              <span class="d-none d-md-inline-block user-name">
+                {% if request.user.is_authenticated %}
+                  {{ request.user.username|truncatechars:10 }}
+                {% else %}
+                  Account
+                {% endif %}
+              </span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-custom-menu" aria-labelledby="userDropdownBtn">
+              {% if request.user.is_authenticated %}
+                <li>
+                  <div class="dropdown-header">
+                    <i class="fas fa-smile-wink"></i> 
+                    {% if request.user.get_full_name %}
+                      {{ request.user.get_full_name }}
+                    {% else %}
+                      {{ request.user.username }}
+                    {% endif %}
+                    <br><small>{{ request.user.email }}</small>
+                  </div>
+                </li>
+                <li><a class="dropdown-item-custom" href="{% url 'store:profile' %}"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a class="dropdown-item-custom" href="{% url 'store:orders' %}"><i class="fas fa-box"></i> My Orders</a></li>
+                <li><a class="dropdown-item-custom" href="{% url 'store:password-change' %}"><i class="fas fa-key"></i> Change Password</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form method="post" action="{% url 'store:logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item-custom text-danger"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+                  </form>
+                </li>
+              {% else %}
+                <li><div class="dropdown-header text-center">Welcome Guest!</div></li>
+                <li><a class="dropdown-item-custom" href="{% url 'store:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li><a class="dropdown-item-custom" href="{% url 'store:register' %}"><i class="fas fa-user-plus"></i> Create Account</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== RED BACKGROUND NAVIGATION BAR WITH #2c3e50 TEXT COLOR ========== -->
+  <div class="red-line-nav-section">
+    <div class="container">
+      <div class="nav-links-red-bar">
+        <a href="{% url 'store:home' %}" class="nav-link-item-dark {% if request.resolver_match.url_name == 'home' %}active-dark{% endif %}">Home</a>
+        <a href="{% url 'store:shop' %}" class="nav-link-item-dark {% if request.resolver_match.url_name == 'shop' %}active-dark{% endif %}">Our Shop</a>
+        <a href="{% url 'store:about' %}" class="nav-link-item-dark">About Us</a>
+        <a href="{% url 'store:contact' %}" class="nav-link-item-dark">Contact Us</a>
+        <!-- WhatsApp Icon with Number - Green, Original Style -->
+        <a href="https://wa.me/923210009798" target="_blank" rel="noopener noreferrer" class="whatsapp-nav-link">
+          <i class="fab fa-whatsapp"></i>
+          <span>0321 0009798</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Search Bar -->
+  <div class="mobile-search-container">
+    <form action="{% url 'store:shop' %}" method="GET">
+      <div class="mobile-search-group">
+        <div class="mobile-search-input-wrap">
+          <i class="fas fa-search"></i>
+          <input type="search" name="q" placeholder="Search products...">
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        <select name="category" class="mobile-category-select">
+          <option value="">All Categories</option>
+          {% for cat in categories_menu %}
+            <option value="{{ cat.slug }}">{{ cat.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </form>
+  </div>
+</header>
+
+<style>
+/* ========== VARIABLES ========== */
+:root {
+  --brand-red: #dc2626;
+  --brand-dark-red: #b91c1c;
+  --brand-light-red: #fef2f2;
+  --border-light: #eef2f6;
+  --text-dark: #1a1f2c;
+  --text-muted: #6c7a8e;
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.08);
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --whatsapp-green: #25D366;
+  --whatsapp-dark: #075e54;
+  --nav-text-color: #2c3e50;
+}
+
+/* Top Bar */
+.top-bar-premium {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.8rem;
+  padding: 10px 0;
+  position: relative;
+  z-index: 1030;
+}
+
+.top-contact {
+  color: var(--text-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.top-contact i {
+  color: var(--brand-red);
+  margin-right: 8px;
+}
+
+.top-links a {
+  text-decoration: none;
+  color: #5a687c;
+  font-weight: 500;
+  transition: var(--transition);
+  font-size: 0.8rem;
+}
+
+.top-links a:hover {
+  color: var(--brand-red);
+}
+
+.separator-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: #cfdde6;
+  border-radius: 50%;
+  margin: 0 12px;
+  vertical-align: middle;
+}
+
+/* Main Navbar */
+.navbar-main-wrapper {
+  background: white;
+  padding: 12px 0;
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.navbar-flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+}
+
+/* Logo - DESIRE red, TOYS black */
+.desiretoys-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-text .desire {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--brand-red);
+  text-transform: uppercase;
+}
+
+.logo-text .toys {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  text-transform: uppercase;
+}
+@media (max-width: 768px) {
+  .logo-text .desire, .logo-text .toys { font-size: 1.1rem; }
+}
+@media (max-width: 480px) {
+  .logo-text .desire, .logo-text .toys { font-size: 0.9rem; }
+}
+
+/* ========== PERFECT SEARCH BAR - WIDE & LONG ========== */
+.global-search-container {
+  flex: 1;
+  max-width: 750px;
+  width: 100%;
+}
+
+.global-search-container form {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 60px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  transition: var(--transition);
+  overflow: hidden;
+  height: 56px;
+}
+
+.global-search-container form:focus-within {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  border-color: var(--brand-red);
+}
+
+/* Category Selector */
+.category-select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafd;
+  padding: 0 20px;
+  border-right: 1px solid #eef2f6;
+  min-width: 160px;
+  height: 100%;
+  transition: background 0.2s;
+}
+
+.category-select-wrapper:hover {
+  background: #f1f5f9;
+}
+
+.category-select-wrapper i:first-child {
+  color: var(--brand-red);
+  font-size: 1rem;
+}
+
+.category-select-wrapper select {
+  border: none;
+  background: transparent;
+  padding: 14px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e2a3e;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+}
+
+.dropdown-arrow {
+  color: #9aaebf;
+  font-size: 0.7rem;
+}
+
+/* Search Input */
+.search-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 22px;
+  gap: 10px;
+  height: 100%;
+}
+
+.search-input-wrapper i {
+  color: #9aaebf;
+  font-size: 1rem;
+}
+
+.search-input-wrapper input {
+  border: none;
+  padding: 0;
+  font-size: 0.95rem;
+  width: 100%;
+  background: transparent;
+  outline: none;
+  font-weight: 500;
+  color: #1e2a3e;
+  height: 100%;
+}
+
+.search-input-wrapper input::placeholder {
+  color: #a1b0c2;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+/* Search Button - SIMPLE STYLE (gray/light, not red) */
+.btn-brand-search-simple {
+  background: #f1f5f9;
+  border: none;
+  padding: 0 32px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  color: #334155;
+  height: 100%;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-brand-search-simple:hover {
+  background: #e2e8f0;
+  color: var(--brand-red);
+}
+
+.btn-brand-search-simple i {
+  font-size: 1rem;
+}
+
+/* Right Side Icons */
+.nav-icon-items {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+/* Simple Nav Links (Orders, Account) */
+.simple-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 0.7rem;
+  transition: var(--transition);
+  padding: 6px 8px;
+  border-radius: 12px;
+  background: transparent;
+  gap: 5px;
+  position: relative;
+}
+
+.simple-nav-link i {
+  font-size: 1.3rem;
+  color: #3a4659;
+  transition: var(--transition);
+}
+
+.simple-nav-link span {
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.simple-nav-link:hover {
+  color: var(--brand-red);
+  transform: translateY(-2px);
+}
+
+.simple-nav-link:hover i {
+  color: var(--brand-red);
+}
+
+/* Cart */
+.cart-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px;
+  right: -14px;
+  background: var(--brand-red);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  width: 18px;
+  height: 18px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Avatar */
+.avatar-simple {
+  width: 30px;
+  height: 30px;
+  background: #f0f2f5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.avatar-simple i {
+  font-size: 0.9rem;
+  margin: 0;
+  color: #5a687c;
+}
+
+.avatar-simple img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.account-dropdown-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+
+.account-dropdown-btn .user-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.dropdown-toggle::after {
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* Dropdown Menu */
+.dropdown-custom-menu {
+  border-radius: 20px;
+  border: none;
+  box-shadow: var(--shadow-md);
+  padding: 0.5rem 0;
+  margin-top: 10px;
+  min-width: 250px;
+  animation: fadeUp 0.2s ease;
+  background: white;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-header {
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-light);
+  background: transparent;
+}
+
+.dropdown-header small {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.dropdown-item-custom {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: var(--transition);
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-dark);
+}
+
+.dropdown-item-custom:hover {
+  background-color: #fef2f2;
+  padding-left: 1.5rem;
+  color: var(--brand-red);
+}
+
+.dropdown-item-custom i {
+  width: 22px;
+  margin-right: 8px;
+}
+
+.logout-form {
+  margin: 0;
+}
+
+.logout-form button {
+  width: 100%;
+  text-align: left;
+}
+
+/* ========== RED BACKGROUND NAVIGATION BAR - DARK TEXT (#2c3e50) ========== */
+.red-line-nav-section {
+  background: #dc2626;  /* Keep red background */
+  border-bottom: 2px solid #b91c1c;
+}
+
+.nav-links-red-bar {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+}
+
+/* Navigation links with #2c3e50 color (dark navy/gray) */
+.nav-link-item-dark {
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2c3e50;  /* Changed from white to #2c3e50 */
+  letter-spacing: 0.3px;
+  transition: 0.2s;
+  position: relative;
+  padding: 8px 0;
+  white-space: nowrap;
+  opacity: 0.95;
+}
+
+/* Underline effect - now using #2c3e50 for active/hover underline */
+.nav-link-item-dark::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: #2c3e50;  /* Dark underline to match text */
+  transition: width 0.2s ease;
+  border-radius: 3px;
+}
+
+.nav-link-item-dark:hover::after,
+.nav-link-item-dark.active-dark::after {
+  width: 100%;
+}
+
+.nav-link-item-dark:hover {
+  opacity: 1;
+  color: #2c3e50;  /* Keep same dark color, just more vibrant on hover */
+  transform: translateY(-1px);
+}
+
+.active-dark {
+  color: #2c3e50;
+  font-weight: 700;
+  opacity: 1;
+}
+
+.active-dark::after {
+  width: 100%;
+  background: #2c3e50;
+}
+
+/* ========== WHATSAPP LINK STYLES - GREEN, ICON + NUMBER ========== */
+.whatsapp-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 16px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #2c3e50;  /* Match the dark text color */
+  transition: all 0.2s ease;
+  margin-left: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.whatsapp-nav-link i {
+  font-size: 1.2rem;
+  color: #25D366;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+}
+
+.whatsapp-nav-link span {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.whatsapp-nav-link:hover {
+  background: #25D366;
+  border-color: #25D366;
+  transform: translateY(-2px);
+  color: white;  /* On hover, text becomes white for contrast */
+}
+
+.whatsapp-nav-link:hover i {
+  color: white;
+}
+
+/* Mobile Search */
+.mobile-search-container {
+  padding: 12px 16px;
+  background: white;
+  border-top: 1px solid var(--border-light);
+  display: none;
+}
+
+.mobile-search-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-search-input-wrap {
+  display: flex;
+  align-items: center;
+  background: #f8fafd;
+  border: 1px solid #eef2f6;
+  border-radius: 60px;
+  padding: 0 16px;
+  gap: 10px;
+}
+
+.mobile-search-input-wrap i {
+  color: #9aaebf;
+}
+
+.mobile-search-input-wrap input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.mobile-search-input-wrap button {
+  background: #f1f5f9;
+  border: none;
+  color: #334155;
+  width: 44px;
+  height: 44px;
+  border-radius: 60px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.mobile-search-input-wrap button:hover {
+  background: #e2e8f0;
+  color: var(--brand-red);
+}
+
+.mobile-category-select {
+  border-radius: 60px;
+  border: 1px solid var(--border-light);
+  padding: 12px 18px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background-color: #f8fafd;
+  cursor: pointer;
+  outline: none;
+}
+
+/* ========== FULL RESPONSIVENESS ========== */
+@media (max-width: 1100px) {
+  .global-search-container {
+    max-width: 550px;
+  }
+  .category-select-wrapper {
+    min-width: 140px;
+    padding: 0 15px;
+  }
+  .nav-links-red-bar {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 950px) {
+  .global-search-container {
+    max-width: 450px;
+  }
+  .category-select-wrapper {
+    min-width: 120px;
+  }
+  .category-select-wrapper select {
+    font-size: 0.8rem;
+  }
+  .btn-brand-search-simple span {
+    display: none;
+  }
+  .btn-brand-search-simple {
+    padding: 0 20px;
+  }
+  .nav-links-red-bar {
+    gap: 20px;
+  }
+  .nav-link-item-dark {
+    font-size: 0.8rem;
+  }
+  .whatsapp-nav-link {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+  }
+  .whatsapp-nav-link i {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .navbar-flex-container {
+    gap: 1rem;
+  }
+  .global-search-container {
+    max-width: 380px;
+  }
+  .category-select-wrapper {
+    min-width: 100px;
+    padding: 0 10px;
+  }
+  .category-select-wrapper i:first-child {
+    display: none;
+  }
+  .category-select-wrapper select {
+    font-size: 0.75rem;
+  }
+  .search-input-wrapper {
+    padding-left: 12px;
+  }
+  .search-input-wrapper i {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .global-search-container {
+    display: none !important;
+  }
+  .mobile-search-container {
+    display: block;
+  }
+  .navbar-main-wrapper {
+    padding: 10px 0;
+  }
+  .nav-icon-items {
+    gap: 12px;
+  }
+  .account-dropdown-btn .user-name {
+    display: none;
+  }
+  .top-bar-premium .row {
+    flex-direction: column;
+    text-align: center;
+  }
+  .top-links {
+    margin-top: 6px;
+  }
+  .separator-dot {
+    margin: 0 8px;
+  }
+  .nav-links-red-bar {
+    gap: 16px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-link-item-dark {
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  .whatsapp-nav-link {
+    margin-left: 0;
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+  .whatsapp-nav-link span {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-flex-container {
+    gap: 0.75rem;
+  }
+  .nav-icon-items {
+    gap: 6px;
+  }
+  .simple-nav-link {
+    padding: 4px;
+  }
+  .simple-nav-link i {
+    font-size: 1rem;
+  }
+  .logo-text .desire,
+  .logo-text .toys {
+    font-size: 0.85rem;
+  }
+  .cart-count {
+    width: 14px;
+    height: 14px;
+    font-size: 8px;
+    top: -8px;
+    right: -10px;
+  }
+  .top-contact {
+    font-size: 0.7rem;
+  }
+  .top-links a {
+    font-size: 0.65rem;
+  }
+  .nav-links-red-bar {
+    gap: 14px;
+  }
+  .nav-link-item-dark {
+    font-size: 0.7rem;
+  }
+  .whatsapp-nav-link span {
+    font-size: 0.65rem;
+  }
+  .whatsapp-nav-link i {
+    font-size: 0.9rem;
+  }
+  .whatsapp-nav-link {
+    padding: 4px 10px;
+  }
+}
+
+/* Hover Effects */
+.simple-nav-link:hover .cart-count {
+  background: var(--brand-dark-red);
+}
+
+.dropdown-item-custom:hover {
+  background-color: #fef2f2;
+  color: var(--brand-red);
+}
+
+.header.sticky-top {
+  z-index: 1030;
+}
+</style>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const badgeEl = document.getElementById('cartItemCount');
+    if (badgeEl) badgeEl.style.display = 'none';
+    
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+    dropdownElementList.map(function(dropdownToggleEl) {
+      return new bootstrap.Dropdown(dropdownToggleEl);
+    });
+  });
+</script>

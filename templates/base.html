@@ -1,0 +1,706 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Language" content="en, ur">
+  
+  <!-- ================= DYNAMIC SEO TAGS ================= -->
+  <title>{% block title %}Desiretoys - #1 Premium Adult Products & Intimate Wellness Store in Pakistan | Discreet Delivery{% endblock title %}</title>
+  <meta name="description" content="{% block meta_description %}Desiretoys.pk - Pakistan's most trusted online store for premium adult products, sex toys, and intimate wellness items. ✓ 100% Authentic ✓ Discreet Packaging ✓ Free Delivery ✓ 24/7 Support. Shop now!{% endblock meta_description %}">
+  <meta name="keywords" content="{% block meta_keywords %}adult products, sex toys, intimate wellness, personal massagers, couples toys, adult store Pakistan, discreet delivery, premium adult products, best sex toys, online adult store, Pakistan adult store, buy sex toys online, adult products Pakistan, sex toys Pakistan, intimate wellness products, personal massagers Pakistan, couples toys Pakistan, discreet adult store, authentic adult products, premium sex toys, adult toy store, wellness products Pakistan, adult shopping Pakistan, private delivery adult products{% endblock meta_keywords %}">
+  <meta name="robots" content="{% block meta_robots %}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% endblock meta_robots %}">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="author" content="Desiretoys">
+  <meta name="theme-color" content="#fd7e14">
+  <meta name="copyright" content="Desiretoys">
+  <meta name="distribution" content="global">
+  <meta name="rating" content="safe for adults">
+  <meta name="revisit-after" content="1 day">
+  <meta name="language" content="English">
+  
+  <!-- ================= GEO TARGETING ================= -->
+  <meta name="geo.region" content="PK">
+  <meta name="geo.placename" content="Pakistan">
+  <meta name="geo.position" content="30.375321;69.345116">
+  <meta name="ICBM" content="30.375321, 69.345116">
+  <meta name="country" content="Pakistan">
+  
+  <!-- ================= CANONICAL URL ================= -->
+  <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock canonical_url %}">
+  
+  <!-- ================= ALTERNATE LANGUAGES ================= -->
+  <link rel="alternate" href="{{ request.build_absolute_uri }}" hreflang="en-pk">
+  <link rel="alternate" href="{{ request.build_absolute_uri }}" hreflang="ur-pk">
+  <link rel="alternate" href="{{ request.build_absolute_uri }}" hreflang="x-default">
+  
+  <!-- ================= OPEN GRAPH / SOCIAL MEDIA ================= -->
+  <meta property="og:type" content="{% block og_type %}website{% endblock og_type %}">
+  <meta property="og:title" content="{% block og_title %}Desiretoys - Premium Adult Products & Intimate Wellness Store Pakistan | Shop with Confidence{% endblock og_title %}">
+  <meta property="og:description" content="{% block og_description %}Discover Pakistan's most trusted adult products store. 100% authentic sex toys, personal massagers & intimate wellness items. Discreet packaging, free delivery, 24/7 support. Shop securely online!{% endblock og_description %}">
+  <meta property="og:image" content="{% block og_image %}{% static 'img/og-image.jpg' %}{% endblock og_image %}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Desiretoys - Premium Adult Products Store Pakistan">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:site_name" content="Desiretoys">
+  <meta property="og:locale" content="en_PK">
+  <meta property="og:locale:alternate" content="ur_PK">
+  <meta property="og:determiner" content="the">
+  
+  <!-- ================= TWITTER CARD ================= -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Desiretoys">
+  <meta name="twitter:creator" content="@Desiretoys">
+  <meta name="twitter:title" content="{% block twitter_title %}Desiretoys - Premium Adult Products Store Pakistan{% endblock twitter_title %}">
+  <meta name="twitter:description" content="{% block twitter_description %}Shop premium adult products in Pakistan with discreet delivery. 100% authentic sex toys & intimate wellness items. Free shipping nationwide!{% endblock twitter_description %}">
+  <meta name="twitter:image" content="{% block twitter_image %}{% static 'img/og-image.jpg' %}{% endblock twitter_image %}">
+  <meta name="twitter:image:alt" content="Desiretoys Premium Adult Products">
+  
+  <!-- ================= ADDITIONAL META TAGS ================= -->
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Desiretoys">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="width">
+  
+  <!-- ================= VERIFICATION TAGS ================= -->
+  <meta name="google-site-verification" content="{% block google_verification %}YOUR_GOOGLE_VERIFICATION_CODE{% endblock google_verification %}">
+  <meta name="msvalidate.01" content="{% block bing_verification %}YOUR_BING_VERIFICATION_CODE{% endblock bing_verification %}">
+  <meta name="yandex-verification" content="{% block yandex_verification %}YOUR_YANDEX_VERIFICATION_CODE{% endblock yandex_verification %}">
+  
+  <!-- ================= FAVICONS ================= -->
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+  <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
+  <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon-76x76.png' %}">
+  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/apple-icon-114x114.png' %}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/apple-icon-120x120.png' %}">
+  <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/apple-icon-144x144.png' %}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/apple-icon-152x152.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-icon-180x180.png' %}">
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <meta name="msapplication-TileColor" content="#fd7e14">
+  <meta name="msapplication-TileImage" content="{% static 'img/ms-icon-144x144.png' %}">
+  
+  <!-- ================= PRELOAD CRITICAL RESOURCES ================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  
+  <!-- ================= GOOGLE FONTS ================= -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;600;700;800&family=Martel+Sans:wght@300;400;600;700;800&display=swap">
+  
+  <!-- ================= BOOTSTRAP CSS ================= -->
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- ================= ICONS ================= -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- ================= PLUGINS ================= -->
+  <link rel="stylesheet" href="{% static 'vendor/lightbox2/css/lightbox.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-select/css/bootstrap-select.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/owl.carousel2/assets/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/owl.carousel2/assets/owl.theme.default.css' %}">
+  
+  <!-- ================= AOS ================= -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <!-- ================= THEME CSS ================= -->
+  <link rel="stylesheet" href="{% static 'css/style.default.css' %}" id="theme-stylesheet">
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+  
+  <!-- ================= ORGANIZATION SCHEMA ================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Desiretoys",
+    "url": "{{ request.scheme }}://{{ request.get_host }}",
+    "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/desiretoy.png' %}",
+    "description": "Pakistan's most trusted online store for premium adult products, sex toys, and intimate wellness items with discreet packaging and fast delivery.",
+    "email": "support@Desiretoys.pk",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "PK",
+      "addressLocality": "Pakistan"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "telephone": "+92-XXX-XXXXXXX",
+      "availableLanguage": ["English", "Urdu"],
+      "contactOption": "TollFree",
+      "areaServed": "PK"
+    },
+    "sameAs": [
+      "https://www.facebook.com/Desiretoys",
+      "https://www.instagram.com/Desiretoys",
+      "https://twitter.com/Desiretoys",
+      "https://www.pinterest.com/Desiretoys"
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "2547",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "foundingDate": "2020",
+    "numberOfEmployees": {
+      "@type": "QuantitativeValue",
+      "value": "25"
+    }
+  }
+  </script>
+  
+  <!-- ================= WEBSITE SCHEMA ================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Desiretoys",
+    "url": "{{ request.scheme }}://{{ request.get_host }}",
+    "description": "Premium adult products and intimate wellness store in Pakistan",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "{{ request.scheme }}://{{ request.get_host }}{% url 'store:shop' %}?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "inLanguage": ["en-PK", "ur-PK"],
+    "copyrightYear": "2024",
+    "isAccessibleForFree": true
+  }
+  </script>
+  
+  <!-- ================= ONLINE STORE SCHEMA ================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "OnlineStore",
+    "name": "Desiretoys",
+    "url": "{{ request.scheme }}://{{ request.get_host }}",
+    "description": "Premium adult products and sex toys store in Pakistan with discreet delivery",
+    "paymentAccepted": ["Cash on Delivery", "Credit Card", "Debit Card", "Bank Transfer", "EasyPaisa", "JazzCash"],
+    "priceRange": "₨500 - ₨25,000",
+    "currenciesAccepted": "PKR",
+    "deliveryLeadTime": {
+      "@type": "QuantitativeValue",
+      "value": "2-4",
+      "unitCode": "DAY"
+    },
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "applicableCountry": "PK",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays": "3",
+      "returnMethod": "https://schema.org/ReturnByMail",
+      "returnFees": "https://schema.org/FreeReturn"
+    },
+    "shippingDetails": {
+      "@type": "OfferShippingDetails",
+      "shippingRate": {
+        "@type": "MonetaryAmount",
+        "value": "0",
+        "currency": "PKR"
+      },
+      "shippingDestination": {
+        "@type": "DefinedRegion",
+        "addressCountry": "PK"
+      },
+      "deliveryTime": {
+        "@type": "ShippingDeliveryTime",
+        "handlingTime": {
+          "@type": "QuantitativeValue",
+          "value": "1",
+          "unitCode": "DAY"
+        },
+        "transitTime": {
+          "@type": "QuantitativeValue",
+          "value": "2",
+          "unitCode": "DAY"
+        }
+      }
+    }
+  }
+  </script>
+  
+  <!-- ================= PRODUCT SCHEMA (Dynamic) ================= -->
+  {% block product_schema %}{% endblock product_schema %}
+  
+  <!-- ================= BREADCRUMB SCHEMA ================= -->
+  {% block breadcrumb_schema %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}"
+    }]
+  }
+  </script>
+  {% endblock breadcrumb_schema %}
+  
+  <!-- ================= FAQ SCHEMA ================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+      "@type": "Question",
+      "name": "Are your products authentic?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we provide 100% authentic premium adult products from trusted brands with manufacturer warranty."
+      }
+    },{
+      "@type": "Question",
+      "name": "Is packaging discreet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely! We ship in plain, unmarked boxes with no indication of contents for complete privacy."
+      }
+    },{
+      "@type": "Question",
+      "name": "Do you deliver across Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we deliver to all cities in Pakistan with free shipping on orders above certain amount."
+      }
+    },{
+      "@type": "Question",
+      "name": "What payment methods do you accept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We accept Cash on Delivery, Credit/Debit Cards, EasyPaisa, JazzCash, and Bank Transfer."
+      }
+    }]
+  }
+  </script>
+  
+  <!-- ================= REVIEW SCHEMA ================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Desiretoys Premium Adult Products",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "2547",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "Desiretoys"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "PKR",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Desiretoys"
+      }
+    }
+  }
+  </script>
+
+  <style>
+    /* Your existing styles remain exactly the same */
+    :root {
+      --primary-color: #fd7e14;
+      --primary-light: #ff9b4c;
+      --primary-dark: #e56700;
+    }
+
+    /* Search Bar Container */
+    .global-search-container {
+      background: linear-gradient(to right, #fafafa, #ffffff);
+      box-shadow: 0 3px 12px rgba(253, 126, 20, 0.1);
+      border-top: 1px solid rgba(253, 126, 20, 0.15);
+      padding: 12px 0 !important;
+    }
+
+    .global-search-container .container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .global-search-container form {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .search-logo-wrapper {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 4px 15px 4px 5px;
+      border-right: 2px solid rgba(253, 126, 20, 0.2);
+      margin-right: 5px;
+    }
+
+    .search-logo-wrapper img {
+      height: 100px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input-wrapper i {
+      position: absolute;
+      left: 14px;
+      color: var(--primary-color);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    .global-search-container .form-control {
+      border: 2px solid #e8e8e8;
+      border-radius: 25px;
+      padding: 11px 16px 11px 40px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background-color: #fafafa;
+      width: 100%;
+    }
+
+    .global-search-container .form-control:focus {
+      background-color: #fff;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(253, 126, 20, 0.12);
+      outline: none;
+    }
+
+    .category-select-wrapper {
+      position: relative;
+      flex: 0 1 180px;
+      display: flex;
+      align-items: center;
+    }
+
+    .category-select-wrapper i {
+      position: absolute;
+      left: 14px;
+      color: var(--primary-color);
+      font-size: 15px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .global-search-container .form-select {
+      border: 2px solid #e8e8e8;
+      border-radius: 25px;
+      padding: 11px 36px 11px 40px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background-color: #fafafa;
+      width: 100%;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23fd7e14' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 14px;
+      appearance: none;
+    }
+
+    .global-search-container .form-select:focus {
+      background-color: #fff;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(253, 126, 20, 0.12);
+      outline: none;
+    }
+
+    .global-search-container .btn-brand {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      border: none;
+      border-radius: 25px;
+      padding: 11px 28px;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(253, 126, 20, 0.28);
+      color: #fff;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .global-search-container .btn-brand:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+      transform: translateY(-3px);
+      box-shadow: 0 6px 22px rgba(253, 126, 20, 0.38);
+    }
+
+    /* Pagination Styles */
+    .pagination {
+      margin-top: 40px;
+      margin-bottom: 40px;
+      gap: 5px;
+    }
+
+    .page-link {
+      color: var(--primary-color);
+      background-color: #fff;
+      border: 2px solid #e8e8e8;
+      padding: 10px 16px;
+      margin: 0 2px;
+      border-radius: 25px !important;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 45px;
+    }
+
+    .page-link:hover {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      border-color: var(--primary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(253, 126, 20, 0.25);
+    }
+
+    .page-item.active .page-link {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      border-color: var(--primary-color);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(253, 126, 20, 0.3);
+    }
+
+    .page-item.disabled .page-link {
+      color: #6c757d;
+      background-color: #f8f9fa;
+      border-color: #e8e8e8;
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .page-item:first-child .page-link,
+    .page-item:last-child .page-link {
+      border-radius: 25px !important;
+      padding: 10px 20px;
+    }
+
+    .page-item:first-child .page-link i,
+    .page-item:last-child .page-link i {
+      font-size: 12px;
+    }
+
+    .page-info {
+      text-align: center;
+      color: #6c757d;
+      font-size: 14px;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    .page-size-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .page-size-selector .form-select-sm {
+      border-radius: 25px;
+      border: 2px solid #e8e8e8;
+      padding: 8px 30px 8px 15px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #495057;
+      background-color: #fafafa;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23fd7e14' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+      cursor: pointer;
+    }
+
+    .page-size-selector .form-select-sm:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(253, 126, 20, 0.1);
+      outline: none;
+    }
+
+    .page-size-selector label {
+      color: #6c757d;
+      font-weight: 500;
+    }
+
+    .pagination-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .page-link {
+        padding: 8px 12px;
+        font-size: 13px;
+        min-width: 38px;
+      }
+      
+      .page-item:first-child .page-link,
+      .page-item:last-child .page-link {
+        padding: 8px 15px;
+      }
+
+      .pagination {
+        gap: 3px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+      }
+      
+      .page-item {
+        margin-bottom: 5px;
+      }
+
+      .page-size-selector {
+        justify-content: center;
+        margin-top: 15px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .global-search-container form {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .search-logo-wrapper {
+        border-right: none;
+        border-bottom: 2px solid rgba(253, 126, 20, 0.2);
+        padding: 4px 0 10px 0;
+        margin-right: 0;
+        margin-bottom: 8px;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .search-input-wrapper {
+        flex: 0 1 100%;
+      }
+
+      .category-select-wrapper {
+        flex: 0 1 calc(50% - 4px);
+      }
+
+      .global-search-container .btn-brand {
+        flex: 0 1 calc(50% - 4px);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .search-input-wrapper,
+      .category-select-wrapper,
+      .global-search-container .btn-brand {
+        flex: 0 1 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-holder d-flex flex-column min-vh-100">
+    
+    {% include 'navbar.html' %}
+
+    {% comment %} <!-- ================= CENTERED SEARCH BAR ================= -->
+    <div class="global-search-container shadow-sm">
+      <div class="container py-2">
+        <form method="get" action="{% url 'store:shop' %}" role="search" aria-label="Site search">
+          <div class="search-logo-wrapper">
+            <img src="{% static 'img/daraz-logo.png' %}" alt="Desiretoys - Premium Adult Products Store Pakistan" width="auto" height="70" loading="eager">
+          </div>
+          
+          <div class="search-input-wrapper">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input type="search" name="q" class="form-control" placeholder="Search premium adult products, sex toys & intimate wellness items..." aria-label="Search products">
+          </div>
+          
+          <div class="category-select-wrapper">
+            <i class="fas fa-th-list" aria-hidden="true"></i>
+            <select name="category" class="form-select" aria-label="Select category">
+              <option value="">All Categories</option>
+              {% for cat in categories_menu %}
+                <option value="{{ cat.slug }}">{{ cat.title }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          
+          <button class="btn btn-brand" type="submit" aria-label="Submit search">
+            <i class="fas fa-search me-1" aria-hidden="true"></i>SEARCH
+          </button>
+        </form>
+      </div>
+    </div> {% endcomment %}
+
+    {% block hero %}
+      {% include 'hero-section.html' %}
+    {% endblock hero %}
+
+    <main class="flex-grow-1" id="main-content">
+      {% block content %}
+      {% endblock content %}
+    </main>
+
+    {% block payment-gateway %}
+    {% endblock payment-gateway %}
+
+    {% include 'footer.html' %}
+  </div>
+
+  {% include 'scripts.html' %}
+
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100
+    });
+  </script>
+</body>
+</html>

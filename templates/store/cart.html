@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+  <div class="container">
+    <!-- HERO SECTION with #2c3e50 background -->
+    <section class="py-5 theme-hero-section" style="background-color: #2c3e50;">
+      <div class="container">
+        <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+          <div class="col-lg-6">
+            <h1 class="h2 text-uppercase mb-0 text-white">Cart</h1>
+          </div>
+          <div class="col-lg-6 text-lg-right">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb justify-content-lg-end mb-0 px-0" style="background: transparent;">
+                <li class="breadcrumb-item"><a href="{% url 'store:home' %}" class="text-white-50">Home</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page">Cart</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {% if cart_products %}
+    <section class="py-5">
+      <h2 class="h5 text-uppercase mb-4" style="color: #f39c12; font-weight: 600;">Shopping cart</h2>
+
+      {% include 'partials/_messages.html' %}
+
+      <div class="row">
+        <div class="col-lg-8 mb-4 mb-lg-0">
+          <!-- CART TABLE-->
+          <div class="table-responsive mb-4">
+            <table class="table" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(243, 156, 18, 0.1);">
+              <thead style="background: #fff3e0; border-bottom: 2px solid #f39c12;">
+                <tr>
+                  <th class="border-0" scope="col"> <strong class="text-small text-uppercase" style="color: #2c3e50;">Product</strong></th>
+                  <th class="border-0" scope="col"> <strong class="text-small text-uppercase" style="color: #2c3e50;">Price</strong></th>
+                  <th class="border-0" scope="col"> <strong class="text-small text-uppercase" style="color: #2c3e50;">Quantity</strong></th>
+                  <th class="border-0" scope="col"> <strong class="text-small text-uppercase" style="color: #2c3e50;">Total</strong></th>
+                  <th class="border-0" scope="col"> </th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for cart_product in cart_products %}
+                <tr style="transition: all 0.3s ease; border-bottom: 1px solid #ecf0f1;">
+                  <th class="pl-0 border-0" scope="row">
+                    <div class="media align-items-center">
+                      {% if cart_product.product.product_image %}
+                        <a class="reset-anchor d-block animsition-link" href="{% url 'store:product-detail' cart_product.product.slug %}">
+                          <img src="{{cart_product.product.product_image.url}}" alt="{{cart_product.product.title}}" width="70" style="border-radius: 8px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"/>
+                        </a>
+                      {% else %}
+                        <a class="reset-anchor d-block animsition-link" href="{% url 'store:product-detail' cart_product.product.slug %}">
+                          <img src="{% static 'img/product-detail-3.jpg' %}" alt="{{cart_product.product.title}}" width="70" style="border-radius: 8px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"/>
+                        </a>
+                      {% endif %}
+                      <div class="media-body ml-3">
+                        <strong class="h6">
+                          <a class="reset-anchor animsition-link" href="{% url 'store:product-detail' cart_product.product.slug %}" style="color: #2c3e50; transition: color 0.3s ease;" onmouseover="this.style.color='#f39c12'" onmouseout="this.style.color='#2c3e50'">
+                            {{cart_product.product.title}}
+                          </a>
+                        </strong>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="align-middle border-0">
+                    <p class="mb-0 small" style="color: #f39c12; font-weight: 600;">${{cart_product.product.price}}</p>
+                  </td>
+                  <td class="align-middle border-0">
+                    <div class="border d-flex align-items-center justify-content-between px-3" style="border-radius: 30px; border-color: #ecf0f1 !important; background: white;">
+                      <span class="small text-uppercase text-gray headings-font-family" style="color: #7f8c8d;">Qty</span>
+                      <div class="quantity d-flex align-items-center">
+                        <a href="{% url 'store:minus-cart' cart_product.id %}" class="p-0 ml-2" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #f39c12; text-decoration: none; border-radius: 50%; transition: all 0.3s ease;" onmouseover="this.style.background='#f39c12'; this.style.color='white'" onmouseout="this.style.background='transparent'; this.style.color='#f39c12'">
+                          <i class="fas fa-minus"></i>
+                        </a>
+                        <input class="form-control form-control-sm border-0 shadow-0 p-0 text-center" type="text" value="{{cart_product.quantity}}" style="width: 40px; font-weight: 600; color: #2c3e50; background: transparent;" readonly/>
+                        <a href="{% url 'store:plus-cart' cart_product.id %}" class="p-0" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #f39c12; text-decoration: none; border-radius: 50%; transition: all 0.3s ease;" onmouseover="this.style.background='#f39c12'; this.style.color='white'" onmouseout="this.style.background='transparent'; this.style.color='#f39c12'">
+                          <i class="fas fa-plus"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="align-middle border-0">
+                    <p class="mb-0 small" style="color: #d35400; font-weight: 700;">${{cart_product.total_price|intcomma}}</p>
+                  </td>
+                  <td class="align-middle border-0">
+                    <a class="reset-anchor" href="{% url 'store:remove-cart' cart_product.id %}" style="color: #7f8c8d; transition: all 0.3s ease; display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; border-radius: 50%;" onmouseover="this.style.background='#fee2e2'; this.style.color='#ef4444'; this.style.transform='scale(1.1)'" onmouseout="this.style.background='transparent'; this.style.color='#7f8c8d'; this.style.transform='scale(1)'">
+                      <i class="fas fa-trash-alt small"></i>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+          <!-- CART NAV-->
+          <div class="px-4 py-3" style="background: #fff3e0; border-radius: 10px;">
+            <div class="row align-items-center text-center">
+              <div class="col-md-6 mb-3 mb-md-0 text-md-left">
+                <a class="btn btn-link p-0 btn-sm" href="{% url 'store:home' %}" style="color: #f39c12; text-decoration: none; font-weight: 500; transition: all 0.3s ease;" onmouseover="this.style.color='#d35400'; this.style.transform='translateX(-5px)'" onmouseout="this.style.color='#f39c12'; this.style.transform='translateX(0)'">
+                  <i class="fas fa-long-arrow-alt-left mr-2"></i>Continue shopping
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ORDER TOTAL-->
+        <div class="col-lg-4">
+          <div class="card border-0 p-lg-4" style="background: #fff3e0; border-radius: 16px; box-shadow: 0 5px 15px rgba(243, 156, 18, 0.15); transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 10px 25px rgba(243, 156, 18, 0.25)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='0 5px 15px rgba(243, 156, 18, 0.15)'; this.style.transform='translateY(0)'">
+            <div class="card-body">
+              <h5 class="text-uppercase mb-4" style="color: #f39c12; font-weight: 700; border-bottom: 2px solid #f39c12; padding-bottom: 10px;">Cart total</h5>
+              <ul class="list-unstyled mb-0">
+                <li class="d-flex align-items-center justify-content-between py-2" style="border-bottom: 1px dashed #ecf0f1;">
+                  <strong class="text-uppercase small font-weight-bold" style="color: #2c3e50;">Subtotal</strong>
+                  <span class="small" style="color: #2c3e50; font-weight: 500;">${{amount|intcomma}}</span>
+                </li>
+                <li class="d-flex align-items-center justify-content-between py-2" style="border-bottom: 1px dashed #ecf0f1;">
+                  <strong class="text-uppercase small font-weight-bold" style="color: #2c3e50;">Shipping Charge</strong>
+                  <span class="small" style="color: #2c3e50; font-weight: 500;">+ ${{shipping_amount}}</span>
+                </li>
+                <li class="border-bottom my-2" style="border-color: #f39c12 !important; opacity: 0.3;"></li>
+                <li class="d-flex align-items-center justify-content-between mb-4 pt-2">
+                  <strong class="text-uppercase small font-weight-bold" style="color: #2c3e50; font-size: 1rem;">Total</strong>
+                  <span style="color: #f39c12; font-size: 1.5rem; font-weight: 800;">${{total_amount|intcomma}}</span>
+                </li>
+              </ul>
+
+              <div class="mt-4 p-3" style="background: white; border-radius: 10px;">
+                <p class="mb-0 small" style="color: #7f8c8d;">
+                  <i class="fas fa-box mr-2" style="color: #f39c12;"></i>
+                  {{cart_products|length}} item(s) in your cart
+                </p>
+              </div>
+              
+              <h5 class="text-uppercase my-4" style="color: #2c3e50; font-weight: 600;">
+                <i class="fas fa-info-circle mr-2" style="color: #f39c12;"></i>
+                Note: To purchase items, click "Add to Cart" or "Buy Now" on the product page
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- ORDERS SECTION -->
+    {% if orders %}
+    <section class="py-5" style="background: #f8f9fa;">
+      <div class="container">
+        <h2 class="h5 text-uppercase mb-4" style="color: #2c3e50; font-weight: 600;">
+          <i class="fas fa-receipt mr-2" style="color: #f39c12;"></i>Your Orders
+        </h2>
+        
+        <div class="table-responsive">
+          <table class="table" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(243, 156, 18, 0.1);">
+            <thead style="background: #fff3e0; border-bottom: 2px solid #f39c12;">
+              <tr>
+                <th class="border-0" scope="col"><strong class="text-small text-uppercase" style="color: #2c3e50;">#</strong></th>
+                <th class="border-0" scope="col"><strong class="text-small text-uppercase" style="color: #2c3e50;">Product</strong></th>
+                <th class="border-0" scope="col"><strong class="text-small text-uppercase" style="color: #2c3e50;">Qty</strong></th>
+                <th class="border-0" scope="col"><strong class="text-small text-uppercase" style="color: #2c3e50;">Ordered Date</strong></th>
+                <th class="border-0" scope="col"><strong class="text-small text-uppercase" style="color: #2c3e50;">Status</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+              <tr style="transition: all 0.3s ease; border-bottom: 1px solid #ecf0f1;">
+                <td class="align-middle border-0" style="color: #7f8c8d; font-weight: 600;">{{ forloop.counter }}</td>
+                <td class="align-middle border-0">
+                  <div class="media align-items-center">
+                    {% if order.product.product_image %}
+                      <img src="{{ order.product.product_image.url }}" alt="{{ order.product.title }}" width="60" style="border-radius: 8px; object-fit: cover; margin-right: 12px;"/>
+                    {% else %}
+                      <img src="{% static 'img/product-1.jpg' %}" alt="{{ order.product.title }}" width="60" style="border-radius: 8px; object-fit: cover; margin-right: 12px;"/>
+                    {% endif %}
+                    <div>
+                      <strong style="color: #2c3e50; display: block;">{{ order.product.title }}</strong>
+                      <small style="color: #f39c12;">SKU: {{ order.product.sku }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td class="align-middle border-0">
+                  <span style="background: #ecf0f1; padding: 6px 12px; border-radius: 20px; color: #2c3e50; font-weight: 600;">{{ order.quantity }}</span>
+                </td>
+                <td class="align-middle border-0" style="color: #7f8c8d;">
+                  <small>{{ order.ordered_date|date:"d M, Y" }}</small>
+                </td>
+                <td class="align-middle border-0">
+                  {% if order.status == 'Pending' %}
+                    <span style="color: #f59e0b; font-weight: 600;">{{ order.status }}</span>
+                  {% elif order.status == 'Accepted' %}
+                    <span style="color: #3b82f6; font-weight: 600;">{{ order.status }}</span>
+                  {% elif order.status == 'Packed' %}
+                    <span style="color: #6366f1; font-weight: 600;">{{ order.status }}</span>
+                  {% elif order.status == 'On The Way' %}
+                    <span style="color: #9333ea; font-weight: 600;">{{ order.status }}</span>
+                  {% elif order.status == 'Delivered' %}
+                    <span style="color: #16a34a; font-weight: 600;">{{ order.status }}</span>
+                  {% elif order.status == 'Cancelled' %}
+                    <span style="color: #dc2626; font-weight: 600;">{{ order.status }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+    
+    {% else %}
+      <div class="text-center py-5">
+        <div style="background: #fff3e0; padding: 50px; border-radius: 20px; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 25px rgba(243, 156, 18, 0.15);">
+          <div style="width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+            <i class="fas fa-shopping-cart fa-3x" style="color: #f39c12;"></i>
+          </div>
+          <h3 class="mb-3 mt-4" style="color: #2c3e50;">Your cart is empty</h3>
+          <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet.</p>
+          <a href="{% url 'store:home' %}" style="background: linear-gradient(135deg, #f39c12, #e67e22); color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; display: inline-block; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 25px rgba(243, 156, 18, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(243, 156, 18, 0.3)'">
+            <i class="fas fa-shopping-bag mr-2"></i>Start Shopping
+          </a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock content %}
+
+{% block payment-gateway %}
+  <!-- Include the PayPal JavaScript SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=ASU6UQykcSp6cVT84zgoRDWpKU3tsBE5w7qXlADGfa2WxJ4vOEH0Z9g6W7yAW5mFUQ8VbxpSS244mw_x&currency=USD"></script>
+
+  <script>
+      // Render the PayPal button into #paypal-button-container
+      paypal.Buttons({
+          // Set up the transaction
+          createOrder: function(data, actions) {
+              return actions.order.create({
+                  purchase_units: [{
+                      amount: {
+                          value: '{{total_amount}}'
+                      }
+                  }]
+              });
+          },
+
+          // Finalize the transaction
+          onApprove: function(data, actions) {
+              return actions.order.capture().then(function(details) {
+                  // Show a success message to the buyer
+                  alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                  // Saving Order in Database after Payment Success
+                  document.getElementById('myform').submit();
+              });
+          },
+          
+          // Style the PayPal button
+          style: {
+              layout: 'vertical',
+              color: 'gold',
+              shape: 'rect',
+              label: 'paypal',
+              height: 40
+          }
+      }).render('#paypal-button-container');
+  </script>
+  
+  <style>
+    /* Hover effects for table rows */
+    tbody tr:hover {
+      background-color: #fffbf5 !important;
+    }
+    
+    /* Quantity input styling */
+    .quantity input:focus {
+      outline: none;
+      box-shadow: none;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .theme-hero-section {
+        padding: 30px 0;
+      }
+      
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .card {
+        margin-top: 20px;
+      }
+    }
+    
+    /* Animation for items */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    tbody tr {
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+{% endblock payment-gateway %}
