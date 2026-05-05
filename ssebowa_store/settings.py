@@ -59,24 +59,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ssebowa_store.wsgi.application'
 
 # Database - Using SQLite (no separate server needed)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# If you want to keep PostgreSQL configuration (commented out for now)
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'desire_db',
-#         'USER': 'desire_user',
-#         'PASSWORD': 'StrongPassword123',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# If you want to keep PostgreSQL configuration (commented out for now)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'desire_db',
+        'USER': 'desire_user',
+        'PASSWORD': 'StrongPassword123',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
