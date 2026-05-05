@@ -68,7 +68,7 @@
                     </div>
                   </th>
                   <td class="align-middle border-0">
-                    <p class="mb-0 small" style="color: #f39c12; font-weight: 600;">${{cart_product.product.price}}</p>
+                    <p class="mb-0 small" style="color: #f39c12; font-weight: 600;">RS:{{cart_product.product.price}}</p>
                   </td>
                   <td class="align-middle border-0">
                     <div class="border d-flex align-items-center justify-content-between px-3" style="border-radius: 30px; border-color: #ecf0f1 !important; background: white;">
@@ -85,7 +85,7 @@
                     </div>
                   </td>
                   <td class="align-middle border-0">
-                    <p class="mb-0 small" style="color: #d35400; font-weight: 700;">${{cart_product.total_price|intcomma}}</p>
+                    <p class="mb-0 small" style="color: #d35400; font-weight: 700;">RS:{{cart_product.total_price|intcomma}}</p>
                   </td>
                   <td class="align-middle border-0">
                     <a class="reset-anchor" href="{% url 'store:remove-cart' cart_product.id %}" style="color: #7f8c8d; transition: all 0.3s ease; display: inline-block; width: 32px; height: 32px; line-height: 32px; text-align: center; border-radius: 50%;" onmouseover="this.style.background='#fee2e2'; this.style.color='#ef4444'; this.style.transform='scale(1.1)'" onmouseout="this.style.background='transparent'; this.style.color='#7f8c8d'; this.style.transform='scale(1)'">
@@ -117,16 +117,16 @@
               <ul class="list-unstyled mb-0">
                 <li class="d-flex align-items-center justify-content-between py-2" style="border-bottom: 1px dashed #ecf0f1;">
                   <strong class="text-uppercase small font-weight-bold" style="color: #2c3e50;">Subtotal</strong>
-                  <span class="small" style="color: #2c3e50; font-weight: 500;">${{amount|intcomma}}</span>
+                  <span class="small" style="color: #2c3e50; font-weight: 500;">RS:{{amount|intcomma}}</span>
                 </li>
                 <li class="d-flex align-items-center justify-content-between py-2" style="border-bottom: 1px dashed #ecf0f1;">
                   <strong class="text-uppercase small font-weight-bold" style="color: #2c3e50;">Shipping Charge</strong>
-                  <span class="small" style="color: #2c3e50; font-weight: 500;">+ ${{shipping_amount}}</span>
+                  <span class="small" style="color: #2c3e50; font-weight: 500;">+ RS:{{shipping_amount}}</span>
                 </li>
                 <li class="border-bottom my-2" style="border-color: #f39c12 !important; opacity: 0.3;"></li>
                 <li class="d-flex align-items-center justify-content-between mb-4 pt-2">
                   <strong class="text-uppercase small font-weight-bold" style="color: #2c3e50; font-size: 1rem;">Total</strong>
-                  <span style="color: #f39c12; font-size: 1.5rem; font-weight: 800;">${{total_amount|intcomma}}</span>
+                  <span style="color: #f39c12; font-size: 1.5rem; font-weight: 800;">RS:{{total_amount|intcomma}}</span>
                 </li>
               </ul>
 

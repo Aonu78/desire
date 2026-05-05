@@ -440,10 +440,10 @@
                 <!-- Price -->
                 <div class="product-price">
                   {% if product.old_price %}
-                    <span class="old-price">${{ product.old_price }}</span>
-                    <span class="current-price">${{ product.price }}</span>
+                    <span class="old-price">RS:{{ product.old_price }}</span>
+                    <span class="current-price">RS:{{ product.price }}</span>
                   {% else %}
-                    <span class="current-price">${{ product.price }}</span>
+                    <span class="current-price">RS:{{ product.price }}</span>
                   {% endif %}
                 </div>
               </div>
