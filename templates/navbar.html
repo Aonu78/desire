@@ -129,14 +129,14 @@
     </div>
   </div>
 
-  <!-- ========== RED BACKGROUND NAVIGATION BAR WITH #2c3e50 TEXT COLOR ========== -->
+  <!-- ========== RED BACKGROUND NAVIGATION BAR - WHITE TEXT, NO UNDERLINE ========== -->
   <div class="red-line-nav-section">
     <div class="container">
       <div class="nav-links-red-bar">
-        <a href="{% url 'store:home' %}" class="nav-link-item-dark {% if request.resolver_match.url_name == 'home' %}active-dark{% endif %}">Home</a>
-        <a href="{% url 'store:shop' %}" class="nav-link-item-dark {% if request.resolver_match.url_name == 'shop' %}active-dark{% endif %}">Our Shop</a>
-        <a href="{% url 'store:about' %}" class="nav-link-item-dark">About Us</a>
-        <a href="{% url 'store:contact' %}" class="nav-link-item-dark">Contact Us</a>
+        <a href="{% url 'store:home' %}" class="nav-link-item-white {% if request.resolver_match.url_name == 'home' %}active-white{% endif %}">Home</a>
+        <a href="{% url 'store:shop' %}" class="nav-link-item-white {% if request.resolver_match.url_name == 'shop' %}active-white{% endif %}">Our Shop</a>
+        <a href="{% url 'store:about' %}" class="nav-link-item-white">About Us</a>
+        <a href="{% url 'store:contact' %}" class="nav-link-item-white">Contact Us</a>
         <!-- WhatsApp Icon with Number - Green, Original Style -->
         <a href="https://wa.me/923210009798" target="_blank" rel="noopener noreferrer" class="whatsapp-nav-link">
           <i class="fab fa-whatsapp"></i>
@@ -585,7 +585,7 @@
   text-align: left;
 }
 
-/* ========== RED BACKGROUND NAVIGATION BAR - DARK TEXT (#2c3e50) ========== */
+/* ========== RED BACKGROUND NAVIGATION BAR - WHITE TEXT, NO UNDERLINE ========== */
 .red-line-nav-section {
   background: #dc2626;  /* Keep red background */
   border-bottom: 2px solid #b91c1c;
@@ -599,53 +599,51 @@
   padding: 10px 0;
 }
 
-/* Navigation links with #2c3e50 color (dark navy/gray) */
-.nav-link-item-dark {
+/* Navigation links - WHITE color, NO underline */
+.nav-link-item-white {
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #2c3e50;  /* Changed from white to #2c3e50 */
+  color: #ffffff;  /* WHITE text */
   letter-spacing: 0.3px;
   transition: 0.2s;
   position: relative;
   padding: 8px 0;
   white-space: nowrap;
   opacity: 0.95;
+  /* Remove underline by ensuring no pseudo-element or border */
 }
 
-/* Underline effect - now using #2c3e50 for active/hover underline */
-.nav-link-item-dark::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0%;
-  height: 3px;
-  background: #2c3e50;  /* Dark underline to match text */
-  transition: width 0.2s ease;
-  border-radius: 3px;
+/* Completely remove any underline effect */
+.nav-link-item-white::after,
+.nav-link-item-white::before {
+  display: none !important;
+  content: none !important;
 }
 
-.nav-link-item-dark:hover::after,
-.nav-link-item-dark.active-dark::after {
-  width: 100%;
-}
-
-.nav-link-item-dark:hover {
+/* Hover effect: keep white, slight opacity change, no underline */
+.nav-link-item-white:hover {
   opacity: 1;
-  color: #2c3e50;  /* Keep same dark color, just more vibrant on hover */
+  color: #ffffff;  /* Keep white */
   transform: translateY(-1px);
+  background: transparent;
+  text-decoration: none; /* Extra safety */
 }
 
-.active-dark {
-  color: #2c3e50;
+/* Active state styling - slightly brighter white, still no underline */
+.active-white {
+  color: #ffffff;
   font-weight: 700;
   opacity: 1;
+  text-decoration: none;
+  /* You can add a subtle background effect if desired, but no underline */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 8px 16px;
+  margin: -8px 0;
 }
-
-.active-dark::after {
-  width: 100%;
-  background: #2c3e50;
+.active-white:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ========== WHATSAPP LINK STYLES - GREEN, ICON + NUMBER ========== */
@@ -659,7 +657,7 @@
   text-decoration: none;
   font-weight: 600;
   font-size: 0.85rem;
-  color: #2c3e50;  /* Match the dark text color */
+  color: #ffffff;  /* White text on red background */
   transition: all 0.2s ease;
   margin-left: auto;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -680,7 +678,7 @@
   background: #25D366;
   border-color: #25D366;
   transform: translateY(-2px);
-  color: white;  /* On hover, text becomes white for contrast */
+  color: white;
 }
 
 .whatsapp-nav-link:hover i {
@@ -784,7 +782,7 @@
   .nav-links-red-bar {
     gap: 20px;
   }
-  .nav-link-item-dark {
+  .nav-link-item-white {
     font-size: 0.8rem;
   }
   .whatsapp-nav-link {
@@ -855,7 +853,7 @@
     padding-bottom: 8px;
     -webkit-overflow-scrolling: touch;
   }
-  .nav-link-item-dark {
+  .nav-link-item-white {
     font-size: 0.75rem;
     white-space: nowrap;
   }
@@ -903,7 +901,7 @@
   .nav-links-red-bar {
     gap: 14px;
   }
-  .nav-link-item-dark {
+  .nav-link-item-white {
     font-size: 0.7rem;
   }
   .whatsapp-nav-link span {
