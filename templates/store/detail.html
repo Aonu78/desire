@@ -100,23 +100,25 @@
 <!-- PRODUCT SCHEMA MARKUP -->
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org/",
+  "@context": "https://schema.org",
   "@type": "Product",
-  "name": "{{ product.title|escapejs }}",
+  "name": "{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:'-':' '|title|escapejs }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
+  "url": "{{ request.build_absolute_uri }}",
   "image": [
     {% if product.product_image %}"{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.url }}"{% endif %}
     {% for img in images %},
     "{{ request.scheme }}://{{ request.get_host }}{{ img.image.url }}"
     {% endfor %}
   ],
-  "description": "{{ product.short_description|default:product.title|escapejs|truncatechars:500 }}",
+  "description": "{% if product.short_description %}{{ product.short_description|striptags|escapejs|truncatechars:500 }}{% elif product.detail_description %}{{ product.detail_description|striptags|escapejs|truncatechars:500 }}{% elif product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs|truncatechars:500 }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:'-':' '|title|escapejs|truncatechars:500 }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
   "sku": "{{ product.sku|default:product.id }}",
   "mpn": "{{ product.sku|default:product.id }}",
+  "productID": "{{ product.sku|default:product.id|escapejs }}",
   "brand": {
     "@type": "Brand",
     "name": "{{ product.brand|default:'Desiretoys' }}"
   },
-  {% if product.get_average_rating %}
+  {% if reviews %}
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "{{ product.get_average_rating|floatformat:1 }}",
@@ -124,15 +126,51 @@
     "bestRating": "5",
     "worstRating": "1"
   },
+  "review": [
+    {% for review in reviews %}
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "{{ review.user.get_full_name|default:review.user.username|escapejs }}"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "{{ review.rating }}",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "itemReviewed": {
+        "@type": "Product",
+        "name": "{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:'-':' '|title|escapejs }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
+        "sku": "{{ product.sku|default:product.id }}",
+        "productID": "{{ product.sku|default:product.id|escapejs }}"
+      },
+      "reviewBody": "{{ review.comment|escapejs }}",
+      "datePublished": "{{ review.created_at|date:'Y-m-d' }}"
+      {% if review.image %},
+      "image": "{{ request.scheme }}://{{ request.get_host }}{{ review.image.url }}"
+      {% endif %}
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ],
   {% endif %}
   "offers": {
     "@type": "Offer",
     "url": "{{ request.build_absolute_uri }}",
     "priceCurrency": "PKR",
-    "price": "{{ product.seller_price }}",
-    "priceValidUntil": "{{ product.valid_until|default:'2025-12-31' }}",
-    "availability": "https://schema.org/InStock",
+    "price": "{{ product.price }}",
+    "priceValidUntil": "2026-12-31",
+    "availability": "https://schema.org/{% if product.is_active %}InStock{% else %}OutOfStock{% endif %}",
     "itemCondition": "https://schema.org/NewCondition",
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "applicableCountry": "PK",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays": "3",
+      "returnMethod": "https://schema.org/ReturnByMail",
+      "returnFees": "https://schema.org/FreeReturn"
+    },
     "shippingDetails": {
       "@type": "OfferShippingDetails",
       "shippingRate": {
@@ -162,14 +200,12 @@
       "@type": "PropertyValue",
       "name": "Category",
       "value": "{{ product.category.title|default:'Adult Products' }}"
-    },
-    {% if product.sizes %}
+    }{% if product.sizes %},
     {
       "@type": "PropertyValue",
       "name": "Size",
       "value": "{{ product.sizes }}"
-    },
-    {% endif %}
+    }{% endif %},
     {
       "@type": "PropertyValue",
       "name": "Delivery Time",
@@ -557,7 +593,14 @@
 
           {% for review in reviews %}
           <div class="mb-4 border-bottom pb-3" itemprop="review" itemscope itemtype="https://schema.org/Review">
-            <strong itemprop="author">{{ review.user.username }}</strong>
+            <div itemprop="author" itemscope itemtype="https://schema.org/Person" style="display:inline;">
+              <meta itemprop="name" content="{{ review.user.get_full_name|default:review.user.username }}">
+              <strong>{{ review.user.get_full_name|default:review.user.username }}</strong>
+            </div>
+            <div itemprop="itemReviewed" itemscope itemtype="https://schema.org/Product" style="display:none;">
+              <meta itemprop="name" content="{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escape }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:'-':' '|title|escape }}{% else %}{{ product.sku|default:product.id|escape }}{% endif %}">
+              <meta itemprop="sku" content="{{ product.sku|default:product.id }}">
+            </div>
             <div itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
               {% for i in "12345"|make_list %}
                 {% if forloop.counter <= review.rating %}
@@ -568,6 +611,7 @@
               {% endfor %}
               <meta itemprop="ratingValue" content="{{ review.rating }}">
               <meta itemprop="bestRating" content="5">
+              <meta itemprop="worstRating" content="1">
             </div>
             <p class="text-muted mt-2" itemprop="reviewBody">{{ review.comment }}</p>
             {% if review.image %}

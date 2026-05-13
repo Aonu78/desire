@@ -37,27 +37,89 @@
     max-width: 1400px;
   }
 
-  /* Hero Carousel Styles - Simplified */
+  /* Hero Carousel Styles - FULLY RESPONSIVE FIXED */
   .hero-carousel {
     position: relative;
     border-radius: var(--border-radius-lg);
     overflow: hidden;
     margin-bottom: 40px;
     box-shadow: var(--shadow-lg);
+    background-color: #f0f0f0;
   }
 
+  /* Fix carousel item height and image responsiveness */
   .carousel-item {
     position: relative;
     height: 500px;
+    background-color: #f0f0f0;
+    overflow: hidden;
   }
 
+  /* Responsive image handling - CONTAIN instead of COVER to show full image */
   .carousel-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center center;
+    background-color: #f0f0f0;
   }
 
-  /* Carousel Indicators - Simplified */
+  /* Alternative: Use background image approach for better control */
+  .carousel-item-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #f0f0f0;
+  }
+
+  /* For smaller devices, adjust height and ensure images show fully */
+  @media (max-width: 992px) {
+    .carousel-item {
+      height: 400px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .carousel-item {
+      height: 350px;
+    }
+    
+    /* Use contain on mobile to show full image */
+    .carousel-item img {
+      object-fit: contain;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .hero-carousel {
+      margin-left: -12px;
+      margin-right: -12px;
+      border-radius: 0;
+      width: calc(100% + 24px);
+    }
+    
+    .carousel-item {
+      height: 280px;
+    }
+    
+    .carousel-item img {
+      object-fit: contain;
+    }
+  }
+
+  /* Extra small devices */
+  @media (max-width: 400px) {
+    .carousel-item {
+      height: 240px;
+    }
+  }
+
+  /* Carousel Indicators */
   .carousel-indicators {
     bottom: 20px;
     z-index: 3;
@@ -75,7 +137,7 @@
     background-color: var(--primary-color);
   }
 
-  /* Carousel Controls - Simplified */
+  /* Carousel Controls */
   .carousel-control-prev,
   .carousel-control-next {
     width: 40px;
@@ -110,6 +172,37 @@
   .carousel-control-next i {
     font-size: 18px;
     color: white;
+  }
+
+  @media (max-width: 576px) {
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .carousel-control-prev {
+      left: 10px;
+    }
+    
+    .carousel-control-next {
+      right: 10px;
+    }
+    
+    .carousel-control-prev i,
+    .carousel-control-next i {
+      font-size: 14px;
+    }
+    
+    .carousel-indicators {
+      bottom: 10px;
+    }
+    
+    .carousel-indicators button {
+      width: 6px;
+      height: 6px;
+      margin: 0 3px;
+    }
   }
 
   /* Section Headers */
@@ -311,26 +404,22 @@
     margin-right: 5px;
   }
 
-  /* Responsive Design */
-  @media (max-width: 992px) {
-    .carousel-item {
-      height: 400px;
-    }
+  /* Map Section Responsive */
+  .map-section iframe {
+    display: block;
+    width: 100%;
+    height: 400px;
   }
-
+  
   @media (max-width: 768px) {
-    .carousel-item {
-      height: 350px;
-    }
-    
-    .section-header h2 {
-      font-size: 1.5rem;
+    .map-section iframe {
+      height: 300px;
     }
   }
-
+  
   @media (max-width: 576px) {
-    .carousel-item {
-      height: 300px;
+    .map-section iframe {
+      height: 250px;
     }
     
     .btn-shop-icon {
@@ -340,27 +429,49 @@
     }
   }
 </style>
+
 <br>
-<!-- SIMPLE HERO CAROUSEL with 2 slides -->
+
+<!-- HERO CAROUSEL - FULLY RESPONSIVE WITH PROPER IMAGE SIZING -->
 <div class="container">
   <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
-   
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
 
-    <!-- Carousel items -->
+    <!-- Carousel items with improved image handling -->
     <div class="carousel-inner">
       <!-- Slide 1 -->
-<div class="carousel-item active">
-  <img src="{% static 'img/1.png' %}" class="d-block w-100" alt="Hero Slide 1">
-</div>
+      <div class="carousel-item active">
+        <picture>
+          <!-- Mobile version (different crop/scale if needed) -->
+          <source media="(max-width: 576px)" srcset="{% static 'img/2.png' %}">
+          <!-- Desktop version -->
+          <source media="(min-width: 577px)" srcset="{% static 'img/2.png' %}">
+          <img src="{% static 'img/2.png' %}" class="d-block w-100" alt="Hero Slide 1" loading="eager">
+        </picture>
+      </div>
 
-<!-- Slide 2 -->
-<div class="carousel-item"> 
-  <img src="{% static 'img/2.png' %}" class="d-block w-100" alt="Hero Slide 2">
-</div>
-<!-- Slide 3 -->
-<div class="carousel-item"> 
-  <img src="{% static 'img/3.png' %}" class="d-block w-100" alt="Hero Slide 3">
-</div>
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <picture>
+          <source media="(max-width: 576px)" srcset="{% static 'img/slide2.png' %}">
+          <source media="(min-width: 577px)" srcset="{% static 'img/slide2.png' %}">
+          <img src="{% static 'img/slide2.png' %}" class="d-block w-100" alt="Hero Slide 2" loading="eager">
+        </picture>
+      </div>
+      
+      <!-- Slide 3 -->
+      <div class="carousel-item">
+        <picture>
+          <source media="(max-width: 576px)" srcset="{% static 'img/3.png' %}">
+          <source media="(min-width: 577px)" srcset="{% static 'img/3.png' %}">
+          <img src="{% static 'img/3.png' %}" class="d-block w-100" alt="Hero Slide 3" loading="eager">
+        </picture>
+      </div>
     </div>
 
     <!-- Controls -->
@@ -451,26 +562,51 @@
             </div>
           </div>
         {% endfor %}
+      {% else %}
+        <!-- Fallback products if no products exist -->
+        <div class="col-12 text-center">
+          <p>No products available at the moment.</p>
+        </div>
       {% endif %}
     </div>
   </section>
 </div>
+
 <!-- Map Section -->
 <section class="map-section">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.5544322517694!2d74.34005631506395!3d31.52040118137264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190483e58107d9%3A0xc23abe6ccc7e2462!2sLahore%2C%20Pakistan!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s" 
-            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.5544322517694!2d74.34005631506395!3d31.52040118137264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190483e58107d9%3A0xc23abe6ccc7e2462!2sLahore%2C%20Pakistan!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s" 
+    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" title="Store Location Map">
+  </iframe>
 </section>
-<!-- Initialize Bootstrap Carousel -->
+
+<!-- Initialize Bootstrap Carousel with better mobile handling -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var myCarousel = document.getElementById('heroCarousel');
     if (myCarousel) {
-      new bootstrap.Carousel(myCarousel, {
+      var carousel = new bootstrap.Carousel(myCarousel, {
         interval: 4000,
-        wrap: true
+        wrap: true,
+        touch: true,  // Enable touch/swipe on mobile
+        pause: 'hover'
+      });
+      
+      // Fix for mobile to ensure images are properly sized after orientation change
+      window.addEventListener('resize', function() {
+        var items = document.querySelectorAll('.carousel-item');
+        items.forEach(function(item) {
+          var img = item.querySelector('img');
+          if (img) {
+            // Force reflow to fix any sizing issues
+            img.style.display = 'none';
+            setTimeout(function() {
+              img.style.display = 'block';
+            }, 10);
+          }
+        });
       });
     }
-  }); 
+  });
 </script>
 
 <!-- Add Font Awesome for icons -->

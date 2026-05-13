@@ -1,0 +1,40 @@
+{
+  "name": "Desiretoys - Premium Adult Products Store",
+  "short_name": "Desiretoys",
+  "description": "Pakistan's most trusted online store for premium adult products, sex toys, and intimate wellness items with discreet packaging and fast delivery.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#fd7e14",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-PK",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "/static/img/logo.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/logo.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/logo.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/logo.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/logo.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

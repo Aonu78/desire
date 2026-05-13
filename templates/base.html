@@ -42,7 +42,7 @@
   <meta property="og:type" content="{% block og_type %}website{% endblock og_type %}">
   <meta property="og:title" content="{% block og_title %}Desiretoys - Premium Adult Products & Intimate Wellness Store Pakistan | Shop with Confidence{% endblock og_title %}">
   <meta property="og:description" content="{% block og_description %}Discover Pakistan's most trusted adult products store. 100% authentic sex toys, personal massagers & intimate wellness items. Discreet packaging, free delivery, 24/7 support. Shop securely online!{% endblock og_description %}">
-  <meta property="og:image" content="{% block og_image %}{% static 'img/og-image.jpg' %}{% endblock og_image %}">
+  <meta property="og:image" content="{% block og_image %}{% static 'img/' %}{% endblock og_image %}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Desiretoys - Premium Adult Products Store Pakistan">
@@ -58,7 +58,7 @@
   <meta name="twitter:creator" content="@Desiretoys">
   <meta name="twitter:title" content="{% block twitter_title %}Desiretoys - Premium Adult Products Store Pakistan{% endblock twitter_title %}">
   <meta name="twitter:description" content="{% block twitter_description %}Shop premium adult products in Pakistan with discreet delivery. 100% authentic sex toys & intimate wellness items. Free shipping nationwide!{% endblock twitter_description %}">
-  <meta name="twitter:image" content="{% block twitter_image %}{% static 'img/og-image.jpg' %}{% endblock twitter_image %}">
+  <meta name="twitter:image" content="{% block twitter_image %}{% static 'img/' %}{% endblock twitter_image %}">
   <meta name="twitter:image:alt" content="Desiretoys Premium Adult Products">
   
   <!-- ================= ADDITIONAL META TAGS ================= -->
@@ -76,22 +76,22 @@
   <meta name="yandex-verification" content="{% block yandex_verification %}YOUR_YANDEX_VERIFICATION_CODE{% endblock yandex_verification %}">
   
   <!-- ================= FAVICONS ================= -->
-  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
-  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
-  <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
-  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
-  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon-76x76.png' %}">
-  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/apple-icon-114x114.png' %}">
-  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/apple-icon-120x120.png' %}">
-  <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/apple-icon-144x144.png' %}">
-  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/apple-icon-152x152.png' %}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-icon-180x180.png' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'img/' %}">
+  <link rel="shortcut icon" href="{% static 'img/' %}" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/' %}">
   <link rel="manifest" href="{% static 'manifest.json' %}">
   <meta name="msapplication-TileColor" content="#fd7e14">
-  <meta name="msapplication-TileImage" content="{% static 'img/ms-icon-144x144.png' %}">
+  <meta name="msapplication-TileImage" content="{% static 'img/' %}">
   
   <!-- ================= PRELOAD CRITICAL RESOURCES ================= -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -130,9 +130,9 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Desiretoys",
+    "name": "Desiretoys.pk",
     "url": "{{ request.scheme }}://{{ request.get_host }}",
-    "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/desiretoy.png' %}",
+    "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/' %}",
     "description": "Pakistan's most trusted online store for premium adult products, sex toys, and intimate wellness items with discreet packaging and fast delivery.",
     "email": "support@Desiretoys.pk",
     "address": {
@@ -143,7 +143,7 @@
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
-      "telephone": "+92-XXX-XXXXXXX",
+      "telephone": "03000921918",
       "availableLanguage": ["English", "Urdu"],
       "contactOption": "TollFree",
       "areaServed": "PK"
@@ -299,35 +299,6 @@
   }
   </script>
   
-  <!-- ================= REVIEW SCHEMA ================= -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "Desiretoys Premium Adult Products",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "2547",
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "brand": {
-      "@type": "Brand",
-      "name": "Desiretoys"
-    },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "PKR",
-      "availability": "https://schema.org/InStock",
-      "seller": {
-        "@type": "Organization",
-        "name": "Desiretoys"
-      }
-    }
-  }
-  </script>
-
   <style>
     /* Your existing styles remain exactly the same */
     :root {
@@ -653,7 +624,7 @@
       <div class="container py-2">
         <form method="get" action="{% url 'store:shop' %}" role="search" aria-label="Site search">
           <div class="search-logo-wrapper">
-            <img src="{% static 'img/daraz-logo.png' %}" alt="Desiretoys - Premium Adult Products Store Pakistan" width="auto" height="70" loading="eager">
+            <img src="{% static 'img/daraz-' %}" alt="Desiretoys - Premium Adult Products Store Pakistan" width="auto" height="70" loading="eager">
           </div>
           
           <div class="search-input-wrapper">
