@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static store_extras %}
 
 {% block title %}{{ product.title }} - Buy Premium Adult Product in Pakistan | Desiretoys{% endblock title %}
 
@@ -102,7 +102,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:'-':' '|title|escapejs }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
+  "name": "{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:"-|| "|title|escapejs }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
   "url": "{{ request.build_absolute_uri }}",
   "image": [
     {% if product.product_image %}"{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.url }}"{% endif %}
@@ -110,7 +110,7 @@
     "{{ request.scheme }}://{{ request.get_host }}{{ img.image.url }}"
     {% endfor %}
   ],
-  "description": "{% if product.short_description %}{{ product.short_description|striptags|escapejs|truncatechars:500 }}{% elif product.detail_description %}{{ product.detail_description|striptags|escapejs|truncatechars:500 }}{% elif product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs|truncatechars:500 }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:'-':' '|title|escapejs|truncatechars:500 }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
+  "description": "{% if product.short_description %}{{ product.short_description|striptags|escapejs|truncatechars:500 }}{% elif product.detail_description %}{{ product.detail_description|striptags|escapejs|truncatechars:500 }}{% elif product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs|truncatechars:500 }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:"-|| "|title|escapejs|truncatechars:500 }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
   "sku": "{{ product.sku|default:product.id }}",
   "mpn": "{{ product.sku|default:product.id }}",
   "productID": "{{ product.sku|default:product.id|escapejs }}",
@@ -142,7 +142,7 @@
       },
       "itemReviewed": {
         "@type": "Product",
-        "name": "{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:'-':' '|title|escapejs }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
+        "name": "{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escapejs }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:"-|| "|title|escapejs }}{% else %}{{ product.sku|default:product.id|escapejs }}{% endif %}",
         "sku": "{{ product.sku|default:product.id }}",
         "productID": "{{ product.sku|default:product.id|escapejs }}"
       },
@@ -598,7 +598,7 @@
               <strong>{{ review.user.get_full_name|default:review.user.username }}</strong>
             </div>
             <div itemprop="itemReviewed" itemscope itemtype="https://schema.org/Product" style="display:none;">
-              <meta itemprop="name" content="{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escape }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:'-':' '|title|escape }}{% else %}{{ product.sku|default:product.id|escape }}{% endif %}">
+              <meta itemprop="name" content="{% if product.title and 'http' not in product.title|lower and 'https' not in product.title|lower %}{{ product.title|escape }}{% elif product.slug and 'http' not in product.slug|lower and 'https' not in product.slug|lower %}{{ product.slug|replace:"-|| "|title|escape }}{% else %}{{ product.sku|default:product.id|escape }}{% endif %}">
               <meta itemprop="sku" content="{{ product.sku|default:product.id }}">
             </div>
             <div itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
